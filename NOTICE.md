@@ -39,14 +39,20 @@ Snap Inc.、Stability AI、Man Ray Trust、VG Bild-Kunst、Estate of Roy Lichten
 
 逐条清单见 [`docs/图源署名.md`](docs/图源署名.md)，机器可读版本见 `data/atlas-image-credits.json`。
 
-**若要公开发布，建议先执行一次**：
+**那 38 张版权保留的主图已在本仓库中剔除**（构建时自动执行）：
+
+```bash
+npm run verify   # 断言「版权保留主图未随包分发」
+```
+
+剔除只移除图片文件与对应条目的参考图引用；条目文本、提示词、来源链接与逐条署名
+**完整保留**在 `data/风格库.json` 与 `docs/图源署名.md` 中。
+若你自行补入了受限图片，可用下面这条幂等命令再清一次：
 
 ```bash
 npm run strip:restricted:dry   # 先看清单，不改文件
-npm run strip:restricted        # 删掉「版权保留」的 38 张主图，并把对应条目的参考图置空
+npm run strip:restricted        # 删掉「版权保留」的主图，并把对应条目的参考图置空
 ```
-
-该命令是幂等的；条目文本、提示词、来源链接全部保留，只移除图片文件与引用。
 「无明示授权」的 71 条与「Atlas 自制」的 37 条不在自动剔除范围内，需自行确认后再决定是否保留。
 
 ## 自产内容

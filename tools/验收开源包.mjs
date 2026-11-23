@@ -140,7 +140,7 @@ console.log('\n=== 5. 第三方素材零残留 ===');
 // 并把被剔除文件的 SHA-256 写进 data/third-party-exclusion.json。
 // 这里对整包重算哈希做独立复核：不依赖导出脚本自己的判断。
 const excludeFile = path.join(PKG, 'data', 'third-party-exclusion.json');
-const SKIP_DIRS = new Set(['node_modules', '.git', '.cache']);
+const SKIP_DIRS = new Set(['node_modules', '.git', '.cache', '我的作品']);
 if (fs.existsSync(excludeFile)) {
   const ex = JSON.parse(fs.readFileSync(excludeFile, 'utf8'));
   const banned = new Set(ex.excludedHashes || []);
@@ -168,6 +168,46 @@ if (fs.existsSync(excludeFile)) {
   );
 } else {
   check('data/third-party-exclusion.json 存在', false, '缺少剔除清单，无法复核第三方素材');
+}
+
+console.log('\n=== 6. 我的作品（用户自扫索引）===');
+// 「我的作品/」是用户扫描自己目录的产物，在 .gitignore 里、不是包内容。
+// 克隆者没扫过时接口应优雅降级，而不是报错。
+const myPage = await req('/myworks');
+check('我的作品页面可访问', myPage.status === 200 && myPage.body.length > 500, `${myPage.status} ${myPage.body.length} 字节`);
+const myWorks = await req('/api/myworks');
+let myJson = null;
+try { myJson = JSON.parse(myWorks.body); } catch {}
+check('我的作品接口返回 ok', myWorks.status === 200 && myJson && myJson.ok === true, `响应码 ${myWorks.status}`);
+check(
+  '未扫描时优雅降级（有 scanned 标记）',
+  myJson && typeof myJson.scanned === 'boolean',
+  myJson ? `scanned=${myJson.scanned}` : '无 JSON'
+);
+const myAssets = await req('/api/myassets');
+let myA = null;
+try { myA = JSON.parse(myAssets.body); } catch {}
+check('我的素材接口返回数组', myAssets.status === 200 && myA && Array.isArray(myA.items), `响应码 ${myAssets.status}`);
+
+// 媒体直出必须按 id 取，不接受裸路径
+const mediaAttacks = [
+  '/media/..%2f..%2fpackage.json',
+  '/media/notexist',
+  '/media/%2e%2e%2f%2e%2e%2fdata%2f' + encodeURIComponent('风格库.json'),
+];
+for (const a of mediaAttacks) {
+  const r = await req(a);
+  check(`拒 ${a}`, r.status === 404, `响应码 ${r.status}`);
+}
+if (myJson && myJson.scanned) {
+  const list = JSON.parse((await req('/api/myassets?limit=1')).body);
+  if (list.items && list.items.length) {
+    const id = list.items[0].id;
+    const r = await req('/media/' + encodeURIComponent(id));
+    check(`媒体按 id 直出 ${id}`, r.status === 200 && r.body.length > 0, `${r.status} ${r.body.length} 字节`);
+  }
+} else {
+  console.log('  ℹ 未扫描（公开仓库的常态），跳过媒体直出正向用例');
 }
 
 child.kill();

@@ -1,6 +1,7 @@
 // 素材收集库交付前最终复核
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import P from './paths.mjs';
 
@@ -79,7 +80,19 @@ for (const f of allImgs) {
 }
 console.log('  图片分布:', JSON.stringify(dirs));
 check('图片库文件总数 > 1000', allImgs.length > 1000, `${allImgs.length} 个`);
-check('风格参考图 568 个', dirs['风格参考图'] === 568, `${dirs['风格参考图']}`);
+// 风格参考图：本地 568 张；公开包在导出阶段自动剔除「版权保留」主图，故按署名表实算期望值
+let expectStyleImgs = 568;
+let strippedMain = 0;
+try {
+  const cr = JSON.parse(fs.readFileSync(path.join(P.data, 'atlas-image-credits.json'), 'utf8').replace(/^\uFEFF/, ''));
+  strippedMain = (cr.images || []).filter((c) => c.redistributable === false && c.includedInPackage === false).length;
+  if (strippedMain) expectStyleImgs = 568 - strippedMain;
+} catch {}
+check(
+  `风格参考图 ${expectStyleImgs} 个${strippedMain ? `（已剔除 ${strippedMain} 张版权保留主图）` : ''}`,
+  dirs['风格参考图'] === expectStyleImgs,
+  `${dirs['风格参考图']}`
+);
 check('动效预览图 436 个（216 条 × 海报+动图，再加工程实拍 2 条）', dirs['动效预览图'] === 436, `${dirs['动效预览图']}`);
 check('动效参考图 130 个', dirs['动效参考图'] === 130, `${dirs['动效参考图']}`);
 check('光影参考图 53 个', dirs['光影参考图'] === 53, `${dirs['光影参考图']}`);
@@ -94,9 +107,25 @@ const allRefs = [...S, ...M, ...L].flatMap((x) => x.refs || []);
 check('三库引用的图全部存在', allRefs.every((f) => imgSet.has(f)), allRefs.filter((f) => !imgSet.has(f)).slice(0, 3).join(' '));
 const allPrev = [...M, ...L].map((x) => x.preview).filter(Boolean);
 check('循环动图引用全部存在', allPrev.every((f) => imgSet.has(f)), allPrev.filter((f) => !imgSet.has(f)).slice(0, 3).join(' '));
-check('风格库 552 条全部有图', S.every((x) => (x.refs || []).length > 0));
+// 「有图」判定：版权保留主图在导出阶段被剔除（refs 置空 + refsStripped 标记），
+// 这类条目**不算缺图**——条目文本、提示词、署名、来源链接都还在。
+const hasImg = (x) => (x.refs || []).length > 0 || x.refsStripped === true;
+const strippedCount = (arr) => arr.filter((x) => x.refsStripped === true).length;
+const sStrip = strippedCount(S);
+check(
+  '风格库 552 条全部有图（版权保留条目除外）',
+  S.every(hasImg),
+  sStrip ? `${S.length - sStrip} 条有图 + ${sStrip} 条版权保留已剔除` : `${S.length} 条`
+);
 check('动效库 370 条全部有图', M.every((x) => (x.refs || []).length > 0));
-check('光影库 130 条全部有图', L.every((x) => (x.refs || []).length > 0));
+check(
+  '光影库 130 条全部有图（版权保留条目除外）',
+  L.every(hasImg),
+  (() => {
+    const n = strippedCount(L);
+    return n ? `${L.length - n} 条有图 + ${n} 条版权保留已剔除` : `${L.length} 条`;
+  })()
+);
 check('动效库 218 条带循环动图', M.filter((x) => x.preview).length === 218, `${M.filter((x) => x.preview).length}`);
 
 console.log('\n=== 6. file:// 离线打开的相对路径 ===');
@@ -143,7 +172,13 @@ if (P.layout === 'package') {
     check('署名表覆盖 504 张主图', cred.images.length === 504, `${cred.images.length} 张`);
     check('每张都有权利声明原文', cred.images.every((c) => typeof c.credit === 'string'));
     const restricted = cred.images.filter((c) => c.redistributable === false);
-    console.log(`  ℹ 版权保留（不可再分发）${restricted.length} 张；可用 npm run strip:restricted 剔除`);
+    const restrictedInPkg = restricted.filter((c) => c.includedInPackage !== false);
+    check(
+      '版权保留主图未随包分发',
+      restrictedInPkg.length === 0,
+      restrictedInPkg.length ? `仍有 ${restrictedInPkg.length} 张在包内` : `${restricted.length} 张已全部剔除`
+    );
+    console.log(`  ℹ 版权保留（不可再分发）${restricted.length} 张；导出阶段自动剔除，条目文本、提示词与署名保留`);
   }
   const creditDoc = path.join(P.root, 'docs', '图源署名.md');
   check('docs/图源署名.md 存在', fs.existsSync(creditDoc));
@@ -154,6 +189,31 @@ if (P.layout === 'package') {
     for (const m of t.matchAll(/(?<![A-Za-z0-9_])[A-Za-z]:\\[^\s`）)、，。|]{4,100}/g)) docLeak.push(`${f}: ${m[0].slice(0, 50)}`);
   }
   check('docs/ 无本机绝对路径', docLeak.length === 0, docLeak.slice(0, 3).join(' | '));
+
+  // ---- 个人内容绝不入库 ----
+  // 「我的作品/」是用户扫描自己目录的产物，已在 .gitignore 里。
+  // 这里做硬断言：只要它被 git 追踪，就是发布事故（个人作品进了公开仓库）。
+  const myDir = path.join(P.root, '我的作品');
+  const myExists = fs.existsSync(myDir);
+  let trackedPersonal = [];
+  if (myExists) {
+    try {
+      const r = spawnSync('git', ['ls-files', '--', '我的作品'], { cwd: P.root, encoding: 'utf8', shell: false });
+      if (r.status === 0) {
+        trackedPersonal = String(r.stdout || '').split(/\r?\n/).filter((l) => l.trim());
+      }
+    } catch {}
+  }
+  check(
+    '个人作品索引未被 git 追踪（我的作品/）',
+    trackedPersonal.length === 0,
+    trackedPersonal.length ? `⚠ 已追踪 ${trackedPersonal.length} 个个人文件` : myExists ? '目录存在但未追踪 ✓' : '目录不存在 ✓'
+  );
+  // 顺带确认 .gitignore 里有这条规则
+  const gi = path.join(P.root, '.gitignore');
+  let giHas = false;
+  if (fs.existsSync(gi)) giHas = fs.readFileSync(gi, 'utf8').includes('我的作品/');
+  check('.gitignore 已排除「我的作品/」', giHas);
 } else {
   console.log('  （本地布局保留真实路径以便本地复现，跳过脱敏检查）');
 }

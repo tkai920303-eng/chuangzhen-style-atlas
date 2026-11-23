@@ -260,7 +260,10 @@ function onImgErr(el){ el.parentNode.innerHTML = '<div class="ph">图片不可�
 function thumb(it){
   const r = (it.refs||[])[0];
   const tag = it.source ? SRC_ZH[it.source] || it.source : '';
-  if(!r) return '<div class="thumb"><div class="ph">无参考图</div>' + (tag?'<span class="tag">'+esc(tag)+'</span>':'') + '</div>';
+  if(!r) {
+    const why = it.refsStripped ? '主图版权保留<br>未随包分发' : '无参考图';
+    return '<div class="thumb"><div class="ph">' + why + '</div>' + (tag?'<span class="tag">'+esc(tag)+'</span>':'') + '</div>';
+  }
   const isRemote = /^https?:/.test(r);
   const src = isRemote ? r : imgUrl(r);
   return '<div class="thumb"><img loading="lazy" src="'+esc(src)+'" alt="'+esc(it.name)+'" onerror="onImgErr(this)"><span class="tag">'+esc(tag)+'</span><span class="src">'+esc(it.category||it.packName||'')+'</span></div>';
@@ -315,6 +318,7 @@ function openDrawer(it){
 
   const r0 = (it.refs||[])[0];
   if(r0 && !/^https?:/.test(r0)) html += '<img class="full" src="'+esc(imgUrl(r0))+'" alt="'+esc(it.name)+'" loading="lazy">';
+  if(it.refsStripped) html += '<div class="credit"><b>主图未随包分发</b>：主参考图为「' + esc(it.imageLicense || '版权保留') + '」，不随本仓库再分发；条目文本、提示词与署名信息完整保留。</div>';
   // 主参考图的出处与授权（atlas 条目的 credit 是唯一的权利声明来源）
   if(it.credit){
     const cls = it.imageLicense || '';

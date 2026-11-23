@@ -37,6 +37,15 @@ a{color:var(--accent)}
 
   <p><a class="cta" href="/atlas">打开视觉参考图鉴 →</a></p>
 
+  <h2>我的作品</h2>
+  <p>这个仓库<strong>只提供参考库</strong>（风格 / 动效 / 光影）。你自己的作品库是另一回事——
+  用仓库自带的扫描器索引你自己的目录，两边互不干扰：</p>
+  <pre><code>npm run scan -- "D:/你的作品目录"   # 扫描并索引你自己的作品
+npm start                            # 然后打开 http://127.0.0.1:5178/myworks</code></pre>
+  <p>扫描结果写在仓库根目录的 <code>我的作品/</code> 里，该目录已在 <code>.gitignore</code> 中，
+  <strong>你的作品不会被提交进这个公开仓库</strong>。</p>
+  <p><a class="cta" href="/myworks">打开我的作品 →</a></p>
+
   <h2>这是什么</h2>
   <ul>
     <li><b>风格库</b>：画面 / 配色 / 动法 / 光影四位一体的风格条目，每条给出可直接投喂给绘图或动效模型的提示词。</li>

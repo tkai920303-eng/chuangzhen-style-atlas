@@ -28,11 +28,12 @@ data/光影库.json            130 条
 data/配色板.json            969 条参考图的实解码配色（键 = 文件名）
 data/atlas-image-credits.json  504 张 atlas 主图的逐条授权判读
 data/third-party-exclusion.json  被剔除的第三方素材清单（SHA-256）+ 剔除结果
-assets/风格参考图/           568 张   atlas 主图 + 本地风格截图 + 24 张画风卡 + 自产参考板
+assets/风格参考图/           530 张   atlas 主图（38 张版权保留已剔除）+ 本地风格截图 + 24 张画风卡 + 自产参考板
 assets/动效预览图/           436 个   216 条的静态海报帧 + 循环动图 + 2 条工程实拍
 assets/动效参考图/           130 张   本地动效与组件的规格卡
 assets/光影参考图/           53 张    自产布光示意图
 tools/检索.mjs               离线检索（推荐入口）
+我的作品/                    （可选）用户自己扫描的作品索引，在 .gitignore 里，不入库
 ```
 
 ---
@@ -184,10 +185,12 @@ curl -O "http://127.0.0.1:5178/atlas-img/动效预览图/动效预览_motion_pop
    | 公有领域 / CC0 / CC 署名类 | 358 | ✅ 可，CC 署名类需保留署名，BY-SA 需同授权 |
    | 无明示授权 | 71 | ⚠️ 需人工判读 |
    | Atlas 自制插画 | 37 | ⚠️ 需单独确认授权条款 |
-   | **版权保留** | **38** | ❌ **不可再分发** |
+   | **版权保留** | **38** | ❌ **不可再分发——已在本仓库中剔除** |
 
    那 38 条含 Disney、Paramount、Warner Bros.、Universal、MGM、Lucasfilm/ILM、Snap Inc.、
    Stability AI、Man Ray Trust、Estate of Roy Lichtenstein/DACS 等权利方署名。
+   **它们的图片文件不在本仓库里**（构建时自动剔除），但条目文本、提示词与署名信息完整保留；
+   涉及的条目在 `data/*.json` 里带 `refsStripped: true` 标记。
 
    **判断方法**：看条目的 `imageRedistributable`。为 `false` 的**不要外发**；
    为 `true` 的按 `imageLicense` 履行署名义务。
@@ -199,7 +202,23 @@ curl -O "http://127.0.0.1:5178/atlas-img/动效预览图/动效预览_motion_pop
    被剔除文件的 SHA-256 与统计见 `data/third-party-exclusion.json`，逐条说明见 `docs/第三方素材剔除记录.md`。
    包内若出现与该清单哈希相同的文件，即为剔除失效，属发布事故。
 
-> 仓库维护者若要剔除受限主图：`npm run strip:restricted`（幂等，先用 `npm run strip:restricted:dry` 看清单）。
+> 受限主图已在构建时自动剔除；仓库维护者若要再清一次：`npm run strip:restricted`（幂等，先用 `npm run strip:restricted:dry` 看清单）。
+
+---
+
+## 索引你自己的作品
+
+参考库和你的作品库是两回事。仓库自带扫描器，**只读**扫描你自己的目录：
+
+```sh
+node tools/扫描我的作品.mjs "D:/你的作品目录"
+npm start                      # 打开 http://127.0.0.1:5178/myworks
+```
+
+- 扫描根下的**一级子目录**各算一个作品；自动跳过 `node_modules`、`.git`、构建产物等
+- 产物：`我的作品/{index,works,summary}.json` —— **该目录在 `.gitignore` 里，不会入库**
+- 接口：`/api/myworks`（作品清单）、`/api/myassets?q=`（检索）、`/media/<id>`（取文件）
+- `npm run verify` 有断言：「个人作品索引未被 git 追踪」——个人内容进了仓库就是发布事故
 
 ---
 
@@ -230,5 +249,6 @@ Windows 上 `PORT=5178 node …` 要写成 `$env:PORT=5178; node …`。
 - **不要**编造条目里没有的参数：条目缺 `ratio` / `colorTemp` 时，用 `prompt` 原文，不要自己填数
 - **不要**把规格卡当渲染预览描述给用户——它是规格，不是画面
 - **不要**删掉 motion-prompt 元素代码的首行授权注释
-- **不要**把 `imageRedistributable: false` 的主图再分发
+- **不要**把 `imageRedistributable: false` 的主图再分发（这 38 张已从本仓库剔除）
+- **不要**把用户自己的作品索引（`我的作品/`）提交进仓库——它是个人内容，`npm run verify` 会拦
 - 条目文本、参考图、作者信息都**保持原样**引用；改写版要另行标注，不要混进原文

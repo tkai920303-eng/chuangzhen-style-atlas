@@ -32,7 +32,8 @@
     "render:verify": "node tools/预览渲染/验证动图.mjs",
     "strip:restricted": "node tools/剔除受限主图.mjs",
     "strip:restricted:dry": "node tools/剔除受限主图.mjs --dry-run",
-    "search": "node tools/检索.mjs"
+    "search": "node tools/检索.mjs",
+    "scan": "node tools/扫描我的作品.mjs"
   },
   "devDependencies": {
     "playwright-core": "1.65.1"

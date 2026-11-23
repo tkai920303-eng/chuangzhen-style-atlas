@@ -4,6 +4,10 @@ node_modules/
 *.log
 npm-debug.log*
 
+# ⚠ 用户自己的作品索引：个人内容，**绝不入库**
+# （扫描命令：node tools/扫描我的作品.mjs <目录>）
+我的作品/
+
 # 编辑器与系统文件
 .vscode/
 .idea/

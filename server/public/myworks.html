@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>我的作品 · 素材风格图鉴</title>
+<style>
+:root{--bg:#0e1014;--panel:#161a21;--line:#252b35;--fg:#e8eaed;--fg2:#a9b0bb;--fg3:#6f7783;--accent:#4fd1c5;--warn:#e0a458}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.7 system-ui,-apple-system,"Microsoft YaHei",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:44px 24px 80px}
+h1{font-size:28px;margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--fg2);margin:0 0 26px}
+a{color:var(--accent)}
+.back{display:inline-block;margin-bottom:18px;color:var(--fg3);text-decoration:none;font-size:13.5px}
+.back:hover{color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px}
+.card .n{font-size:25px;font-weight:650;color:var(--accent);font-variant-numeric:tabular-nums}
+.card .t{color:var(--fg2);font-size:13px;margin-top:3px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:0 0 22px}
+.empty{color:var(--fg2);text-align:center;padding:44px 20px}
+.empty code{background:#11151b;border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--accent);font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.warnbox{border-left:3px solid var(--warn);background:#1c1811;padding:12px 16px;border-radius:0 8px 8px 0;margin:0 0 20px;color:#e8dcc8;font-size:14px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+input,select{background:#11151b;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:9px 12px;font-size:14px;font-family:inherit}
+input{flex:1;min-width:220px}
+input:focus,select:focus{outline:none;border-color:var(--accent)}
+button{background:var(--accent);color:#06231f;font-weight:650;border:0;border-radius:8px;padding:9px 18px;font-size:14px;cursor:pointer}
+button.ghost{background:transparent;color:var(--fg2);border:1px solid var(--line)}
+button:hover{filter:brightness(1.08)}
+h2{font-size:16px;margin:26px 0 12px;color:var(--fg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.item{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.item .meta{padding:9px 11px}
+.item .fn{font-size:13px;word-break:break-all;line-height:1.45}
+.item .fp{color:var(--fg3);font-size:11.5px;margin-top:4px;word-break:break-all}
+.item .tag{display:inline-block;margin-top:6px;padding:1px 7px;border-radius:5px;background:#222834;color:var(--fg2);font-size:11px}
+.item img{display:block;width:100%;height:132px;object-fit:cover;background:#0b0d11}
+.item .noimg{display:flex;align-items:center;justify-content:center;height:132px;background:#11151b;color:var(--fg3);font-size:12px}
+.item video{display:block;width:100%;height:132px;background:#000;object-fit:cover}
+.item audio{width:100%;display:block;margin-top:6px}
+.works{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.works button{background:transparent;color:var(--fg2);border:1px solid var(--line);font-weight:400;padding:6px 13px;border-radius:20px;font-size:13px}
+.works button.on{background:var(--accent);color:#06231f;border-color:var(--accent);font-weight:650}
+.count{color:var(--fg3);font-size:13px;margin-left:auto}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;color:var(--fg2);font-size:13px;margin:10px 0 0}
+code{font-family:ui-monospace,Consolas,monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← 返回首页</a>
+  <h1>我的作品</h1>
+  <p class="sub">扫描你自己目录后得到的作品索引。索引与文件都留在本机，<b>不会</b>进入这个公开仓库。</p>
+
+  <div id="body"><div class="empty">读取中…</div></div>
+</div>
+<script>
+const $ = (s)=>document.querySelector(s);
+const CAT_ZH = {image:'图片',video:'视频',audio:'音频',doc:'文档',code:'代码',archive:'压缩包',model3d:'三维',font:'字体',other:'其他'};
+let STATE = {work:'', cat:'', q:''};
+
+function fmtBytes(n){
+  if(!n && n!==0) return '';
+  const u=['B','KB','MB','GB','TB']; let i=0; let x=n;
+  while(x>=1024 && i<u.length-1){x/=1024;i++;}
+  return x.toFixed(i?1:0)+' '+u[i];
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+async function load(){
+  const info = await fetch('/api/myworks').then(r=>r.json());
+  if(!info.scanned){
+    $('#body').innerHTML = `
+      <div class="empty">
+        <p><b>还没有扫描过自己的作品。</b></p>
+        <p>在仓库根目录运行：</p>
+        <pre><code>node tools/扫描我的作品.mjs "D:/你的作品目录"</code></pre>
+        <p style="margin-top:18px;font-size:13.5px">${esc(info.hint||'')}</p>
+        <p style="font-size:13.5px;color:var(--fg3)">扫描结果写在仓库根目录的 <code>我的作品/</code> 里，该目录已在 .gitignore 中，不会被提交。</p>
+      </div>`;
+    return;
+  }
+  const catSel = Object.keys(info.byCat||{}).sort().map(c=>`<option value="${esc(c)}">${esc(CAT_ZH[c]||c)} ${info.byCat[c]}</option>`).join('');
+  $('#body').innerHTML = `
+    <div class="stats">
+      <div class="card"><div class="n">${info.count}</div><div class="t">素材总数</div></div>
+      <div class="card"><div class="n">${(info.works||[]).length}</div><div class="t">作品数</div></div>
+      <div class="card"><div class="n">${fmtBytes(info.bytes)}</div><div class="t">总体积</div></div>
+      <div class="card"><div class="n">${esc((info.root||'').split(/[\\\\/]/).pop()||'—')}</div><div class="t">扫描根目录</div></div>
+    </div>
+    <div class="warnbox">索引生成于 <b>${esc((info.generatedAt||'').replace('T',' ').slice(0,19))}</b>。文件新增或删除后，重跑 <code>node tools/扫描我的作品.mjs "${esc(info.root||'')}"</code> 刷新。</div>
+    <div class="works" id="works"></div>
+    <div class="bar">
+      <input id="q" placeholder="按文件名或路径搜索…" value="${esc(STATE.q)}">
+      <select id="cat"><option value="">全部类型</option>${catSel}</select>
+      <button id="go">搜索</button>
+      <button class="ghost" id="reset">清空</button>
+      <span class="count" id="cnt"></span>
+    </div>
+    <div class="grid" id="grid"></div>`;
+
+  const wk = document.getElementById('works');
+  const drawWorks = (sel)=>{
+    wk.innerHTML = ['<button class="'+(sel===''?'on':'')+'" data-w="">全部作品</button>']
+      .concat((info.works||[]).map(w=>`<button class="${sel===w.id?'on':''}" data-w="${esc(w.id)}">${esc(w.name)} · ${w.files}</button>`)).join('');
+  };
+  drawWorks(STATE.work);
+  wk.addEventListener('click', e=>{
+    const b=e.target.closest('button[data-w]'); if(!b) return;
+    STATE.work=b.dataset.w; drawWorks(STATE.work); loadItems();
+  });
+  document.getElementById('cat').value = STATE.cat;
+  document.getElementById('go').addEventListener('click', ()=>{
+    STATE.q=document.getElementById('q').value.trim(); STATE.cat=document.getElementById('cat').value; loadItems();
+  });
+  document.getElementById('q').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('go').click(); });
+  document.getElementById('reset').addEventListener('click', ()=>{
+    STATE={work:'',cat:'',q:''}; document.getElementById('q').value=''; document.getElementById('cat').value=''; drawWorks(''); loadItems();
+  });
+  loadItems();
+}
+
+async function loadItems(){
+  const p=new URLSearchParams();
+  if(STATE.q) p.set('q',STATE.q);
+  if(STATE.work) p.set('work',STATE.work);
+  if(STATE.cat) p.set('cat',STATE.cat);
+  p.set('limit','500');
+  const d=await fetch('/api/myassets?'+p.toString()).then(r=>r.json());
+  document.getElementById('cnt').textContent = d.total+' 个素材';
+  const grid=document.getElementById('grid');
+  if(!d.items.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">没有匹配的素材</div>'; return; }
+  grid.innerHTML=d.items.map(a=>{
+    const src='/media/'+encodeURIComponent(a.id);
+    let media='';
+    if(a.cat==='image') media=`<img loading="lazy" src="${src}" alt="${esc(a.name)}">`;
+    else if(a.cat==='video') media=`<video loading="lazy" src="${src}" controls preload="metadata"></video>`;
+    else if(a.cat==='audio') media=`<div class="noimg">♪ 音频</div><audio controls preload="metadata" src="${src}"></audio>`;
+    else media=`<div class="noimg">${esc(CAT_ZH[a.cat]||a.cat)}</div>`;
+    return `<div class="item">${media}<div class="meta"><div class="fn">${esc(a.name)}</div><div class="fp">${esc(a.rel)}</div><div class="fp">${fmtBytes(a.size)}${a.media&&a.media.duration?' · '+a.media.duration+'s':''}${a.media&&a.media.width?' · '+a.media.width+'×'+a.media.height:''}</div><span class="tag">${esc(CAT_ZH[a.cat]||a.cat)}</span></div></div>`;
+  }).join('');
+}
+load().catch(e=>{$('#body').innerHTML='<div class="empty">读取失败：'+esc(e)+'</div>';});
+</script>
+</body>
+</html>
