@@ -77,6 +77,27 @@ npm run strip:restricted        # 删掉「版权保留」的主图，并把对�
 ```
 「无明示授权」的 52 条与「Atlas 自制」的 37 条不在自动剔除范围内，需自行确认后再决定是否保留。
 
+## ⚠️ GFDL 主图：许可全文随包分发
+
+上面判读表里的 **GFDL 2 条**（`kaleidoscope`、`mirror-repeat`，来源为 GIMP Documentation Team）
+是**随包分发**的。GFDL 允许再分发，但要求**随分发附上许可全文**，
+因此本仓库把 **GNU Free Documentation License v1.3 全文**放在：
+
+```
+docs/GFDL许可全文.txt
+```
+
+处置口径：
+
+- 这 2 张图**不适用**仓库根目录的 MIT 许可，它们**仍按 GFDL 分发**；
+- 原始权利声明（`GIMP Documentation Team, GNU Free Documentation License`）保留在
+  `data/atlas-image-credits.json` 与 `docs/图源署名.md` 里；
+- 本仓库**未修改**这 2 张图的内容，只是随包分发原件；
+- 仓库的其余部分（代码与自产内容）仍是 MIT——GFDL 第 7 条允许把独立作品以聚合形式
+  与本仓库并列分发，聚合本身不改变各作品的授权。
+
+引用这 2 张图时，请连同 `docs/GFDL许可全文.txt` 一起带上。
+
 ## ⚠️ Vibe 画法库：上游的分段许可
 
 「Vibe 画法库」（`data/Vibe画法库.json`）来自开源项目
@@ -108,8 +129,10 @@ npm run strip:restricted        # 删掉「版权保留」的主图，并把对�
 
 以下内容由本项目自行生成，版权归本项目所有（MIT）：
 
-- `assets/光影参考图/*.png` —— 依据布光参数绘制的布光示意图（俯视灯位图 + 色温条 + 光比条 + 光质标记），**53 张**
-- `assets/动效参考图/*.png` —— 本地工程动效与组件的规格卡（源码位置、参数、依赖、状态），**130 张**
+- `assets/光影参考图/*.png` —— 依据布光参数绘制的布光示意图（俯视灯位图 + 色温条 + 光比条 + 光质标记），**58 张**
+- `assets/动效参考图/*.png` —— 本地工程动效与组件的规格卡（源码位置、参数、依赖、状态），**136 张**
+- `assets/风格参考图/风格图鉴_画面设计沉淀_*.jpg` —— 《画面设计沉淀》条目的自绘风格示意图，**6 张**
+- `assets/光影参考图/光影示意_*.png` 与 `assets/动效参考图/动效规格卡_vd-*.png` —— 《画面设计沉淀》条目的自绘示意图，**11 张**
 - `assets/动效预览图/动效预览_<pack>_<slug>.{webp,png}` —— 由 motion-prompt 的 MIT 元素代码**在本机渲染**得到（Canvas 绘制函数原样执行，未改动作者内容），**216 条**
 - `assets/动效预览图/动效预览_FX-KIT-PARTICLES-001.*`、`动效预览_FX-ML-SHUTTER-001.*` —— 作者自有工程的渲染实拍，**2 条**
 - `data/*.json` 中由本项目组装的提示词与结构化字段

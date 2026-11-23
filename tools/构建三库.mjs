@@ -15,8 +15,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildLightingEntries } from './库源/光影库条目.mjs';
+import { styles as VD_STYLES, motions as VD_MOTIONS, lighting as VD_LIGHTING } from './库源/画面设计沉淀.mjs';
 import { classifyCredit } from './授权分类.mjs';
-import P, { IMG_STYLE, IMG_MOTION, IMG_LIGHT, rel } from './paths.mjs';
+import P, { IMG_STYLE, IMG_MOTION, IMG_LIGHT, rel, abs } from './paths.mjs';
 
 const LIB = P.root;
 const CACHE = P.cache;
@@ -34,6 +35,12 @@ const readText = (p) => { try { return fs.readFileSync(p, 'utf8'); } catch { ret
 const PAL = readJson(P.palette, {});
 const LOCAL = readJson(path.join(P.tools, '库源', '本地风格.json'), { styles: [] });
 const COMPONENTS = readJson(path.join(IDX, 'components.json'), []);
+
+// 《画面设计沉淀》数据源在库内的位置随布局变：本地是 04_工具\库源\，
+// 发布包是 tools\库源\。条目的 sourcePath 指向它，必须跟着布局走，
+// 否则包内用户按 sourcePath 找不到文件。
+const VD_SRC = P.layout === 'package' ? 'tools/库源/画面设计沉淀.mjs' : '04_工具\\库源\\画面设计沉淀.mjs';
+const vdSourcePath = (id) => `${VD_SRC}#${id}`;
 
 // ---------- 配色描述生成 ----------
 function paletteOf(entry) {
@@ -79,6 +86,39 @@ for (const e of LOCAL.styles) {
     sourceUrl: null,
     sourcePath: e.sourcePath || null,
     sourcePath2: e.sourcePath2 || null,
+    refs: (e.refs || []).map((f) => rel(IMG_STYLE, f)),
+    visual: e.visual,
+    palette: pal.colors,
+    paletteDesc: pal.desc,
+    motion: e.motion,
+    lighting: e.lighting,
+    texture: e.texture || null,
+    use: e.use,
+    migration: e.migration || null,
+    limitations: e.limitations,
+    mix: e.mix || null,
+    prompt: stylePrompt(e, pal),
+  });
+}
+
+// ---- 1.5 《画面设计沉淀》：从短视频逆向拆解抽象出的自产风格 ----
+// 数据源是 04_工具\库源\画面设计沉淀.mjs（不是 03_索引 下的成品 JSON——
+// 那个是本脚本的产物，直接改会被下次重建覆盖）。
+// 走与「本地已有风格」同一套机制：paletteFrom 指向参考图，配色由
+// 04_工具\提取配色.mjs 从自产参考图实际提取，不手填色值。
+for (const e of VD_STYLES) {
+  const pal = paletteOf(e);
+  styles.push({
+    id: e.id,
+    name: e.name,
+    nameEn: e.nameEn,
+    category: e.category,
+    mechanism: e.mechanism,
+    status: e.status || '自产沉淀（从短视频逆向拆解抽象出的可复用画面系统）',
+    source: 'local',
+    sourceUrl: null,
+    sourcePath: vdSourcePath(e.id),
+    sourcePath2: null,
     refs: (e.refs || []).map((f) => rel(IMG_STYLE, f)),
     visual: e.visual,
     palette: pal.colors,
@@ -328,6 +368,15 @@ for (const c of COMPONENTS) {
   });
 }
 
+// ---- 《画面设计沉淀》动效：自产规格 + 自产代码 + 白模版 ----
+// 与上面的「本地工程组件」不同：这些条目**自带完整代码与白模版**，
+// 不引用任何工程内文件，所以 local 标 false（工程组件那条检查只针对 local=true）。
+// refs 只保留磁盘上真实存在的参考图，避免拼出断链。
+for (const e of VD_MOTIONS) {
+  const refs = (e.refs || []).filter((r) => fs.existsSync(abs(r)));
+  motions.push({ ...e, sourcePath: vdSourcePath(e.id), refs, preview: null, local: false });
+}
+
 // ---- motion-prompt 240 条 ----
 const COLOR_WORDS = /\b(coral|blue|yellow|mint|red|green|white|black|grey|gray|teal|cyan|purple|violet|orange|pink|brown|indigo|gold|golden|silver|magenta|lime|navy|beige|tan|cream|coral)\b/gi;
 const SLOT_MAP = ['主体形状', '材质', '主色', '背景', '投影', '文字'];
@@ -522,6 +571,14 @@ if (rawLight) {
     }
   }
   lighting.push(...webEntries);
+}
+
+// ---- 4. 《画面设计沉淀》光影：自产示意图 + 布光参数 ----
+// 与上面的「全网光影资料」不同，这些是自产条目：没有外链 sourceUrl，
+// 溯源靠 sourcePath（库内相对路径）+ sourceName。
+for (const e of VD_LIGHTING) {
+  const refs = (e.refs || []).filter((r) => fs.existsSync(abs(r)));
+  lighting.push({ ...e, sourcePath: vdSourcePath(e.id), refs });
 }
 
 // ---- 写出 ----

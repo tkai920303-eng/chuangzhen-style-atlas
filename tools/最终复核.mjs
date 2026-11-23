@@ -17,9 +17,9 @@ const check = (label, cond, extra = '') => {
 console.log('=== 1. 产出文件 ===');
 console.log(`  布局：${P.layout}（根目录 ${P.root}）`);
 const files = [
-  ['风格库.json', 552],
-  ['动效库.json', 370],
-  ['光影库.json', 130],
+  ['风格库.json', 558],
+  ['动效库.json', 376],
+  ['光影库.json', 135],
 ];
 const docs = {};
 for (const [rel, expect] of files) {
@@ -41,7 +41,7 @@ check('prompt 含【配色】', S.every((x) => x.prompt.includes('【配色】')
 check('prompt 含【动法】', S.every((x) => x.prompt.includes('【动法】')));
 check('prompt 含【光影】', S.every((x) => x.prompt.includes('【光影】')));
 check('id 唯一', new Set(S.map((x) => x.id)).size === S.length);
-check('本地 24 条都有 sourcePath', S.filter((x) => x.source === 'local').every((x) => x.sourcePath));
+check('本地风格条目都有 sourcePath', S.filter((x) => x.source === 'local').every((x) => x.sourcePath));
 
 console.log('\n=== 3. 动效库 + 白模化 ===');
 const M = docs['动效库.json'].items;
@@ -54,12 +54,12 @@ check('白模版规格已去色', mp.every((x) => x.whitened.spec.every((l) => !
 check('元素代码保留 MIT 首行', mp.every((x) => x.code && /MIT License/i.test(x.code.firstLine)));
 check('代码全文首行与 firstLine 一致', mp.every((x) => x.code.body.split(/\r?\n/)[0] === x.code.firstLine));
 check('时序/缓动/幅度三段不重复', mp.every((x) => !(x.timing && x.easing && x.timing === x.easing) && !(x.timing && x.amplitude && x.timing === x.amplitude)));
-check('本地 130 条只引用不搬动', M.filter((x) => x.local).every((x) => x.sourcePath && !x.whitened));
+check('本地工程组件只引用不搬动', M.filter((x) => x.local).every((x) => x.sourcePath && !x.whitened), `${M.filter((x) => x.local).length} 条`);
 
 console.log('\n=== 4. 光影库 ===');
 const L = docs['光影库.json'].items;
 check('每条都有 prompt', L.every((x) => x.prompt && x.prompt.length > 40));
-check('每条都有出处 sourceUrl', L.every((x) => x.sourceUrl && x.sourceUrl.length > 10));
+check('每条都有出处（外链 sourceUrl 或库内 sourcePath+sourceName）', L.every((x) => (x.sourceUrl && x.sourceUrl.length > 10) || (x.sourcePath && x.sourceName)));
 check('24 套布光方案', L.filter((x) => x.category && x.category.includes('布光')).length >= 24);
 check('id 唯一', new Set(L.map((x) => x.id)).size === L.length);
 
@@ -81,13 +81,13 @@ for (const f of allImgs) {
 }
 console.log('  图片分布:', JSON.stringify(dirs));
 check('图片库文件总数 > 1000', allImgs.length > 1000, `${allImgs.length} 个`);
-// 风格参考图：本地 568 张；公开包在导出阶段自动剔除「版权保留」主图，故按署名表实算期望值
-let expectStyleImgs = 568;
+// 风格参考图：本地 574 张（含 6 张《画面设计沉淀》自产图）；公开包在导出阶段自动剔除「版权保留」主图，故按署名表实算期望值
+let expectStyleImgs = 574;
 let strippedMain = 0;
 try {
   const cr = JSON.parse(fs.readFileSync(path.join(P.data, 'atlas-image-credits.json'), 'utf8').replace(/^\uFEFF/, ''));
   strippedMain = (cr.images || []).filter((c) => c.redistributable === false && c.includedInPackage === false).length;
-  if (strippedMain) expectStyleImgs = 568 - strippedMain;
+  if (strippedMain) expectStyleImgs = 574 - strippedMain;
 } catch {}
 check(
   `风格参考图 ${expectStyleImgs} 个${strippedMain ? `（已剔除 ${strippedMain} 张版权保留主图）` : ''}`,
@@ -95,8 +95,8 @@ check(
   `${dirs['风格参考图']}`
 );
 check('动效预览图 436 个（216 条 × 海报+动图，再加工程实拍 2 条）', dirs['动效预览图'] === 436, `${dirs['动效预览图']}`);
-check('动效参考图 130 个', dirs['动效参考图'] === 130, `${dirs['动效参考图']}`);
-check('光影参考图 53 个', dirs['光影参考图'] === 53, `${dirs['光影参考图']}`);
+check('动效参考图 136 个', dirs['动效参考图'] === 136, `${dirs['动效参考图']}`);
+check('光影参考图 58 个', dirs['光影参考图'] === 58, `${dirs['光影参考图']}`);
 let palCount = 0;
 try {
   const PAL = JSON.parse(fs.readFileSync(P.palette, 'utf8'));
@@ -114,13 +114,13 @@ const hasImg = (x) => (x.refs || []).length > 0 || x.refsStripped === true;
 const strippedCount = (arr) => arr.filter((x) => x.refsStripped === true).length;
 const sStrip = strippedCount(S);
 check(
-  '风格库 552 条全部有图（版权保留条目除外）',
+  '风格库 558 条全部有图（版权保留条目除外）',
   S.every(hasImg),
   sStrip ? `${S.length - sStrip} 条有图 + ${sStrip} 条版权保留已剔除` : `${S.length} 条`
 );
-check('动效库 370 条全部有图', M.every((x) => (x.refs || []).length > 0));
+check('动效库 376 条全部有图', M.every((x) => (x.refs || []).length > 0));
 check(
-  '光影库 130 条全部有图（版权保留条目除外）',
+  '光影库 135 条全部有图（版权保留条目除外）',
   L.every(hasImg),
   (() => {
     const n = strippedCount(L);
@@ -246,6 +246,17 @@ if (P.layout === 'package') {
       restrictedInPkg.length ? `仍有 ${restrictedInPkg.length} 张在包内` : `${restricted.length} 张已全部剔除`
     );
     console.log(`  ℹ 版权保留（不可再分发）${restricted.length} 张；导出阶段自动剔除，条目文本、提示词与署名保留`);
+    // GFDL 允许再分发，但**要求随分发附上许可全文**。
+    // 包里既有 GFDL 主图，就必须把 GFDL 全文一起带进包，否则许可不完整。
+    const gfdlInPkg = cred.images.filter((c) => c.license === 'GFDL' && c.includedInPackage !== false);
+    const gfdlText = path.join(P.root, 'docs', 'GFDL许可全文.txt');
+    check(
+      `GFDL 主图随包时附许可全文（${gfdlInPkg.length} 张）`,
+      gfdlInPkg.length === 0 || fs.existsSync(gfdlText),
+      gfdlInPkg.length
+        ? (fs.existsSync(gfdlText) ? 'docs/GFDL许可全文.txt ✓' : '缺 docs/GFDL许可全文.txt')
+        : '无 GFDL 主图随包'
+    );
   }
   const creditDoc = path.join(P.root, 'docs', '图源署名.md');
   check('docs/图源署名.md 存在', fs.existsSync(creditDoc));
