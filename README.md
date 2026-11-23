@@ -137,11 +137,11 @@ GET /atlas-img/<目录>/<文件>       取参考图
 │   ├── 动效库.json          370 条
 │   ├── 光影库.json          130 条
 │   ├── components.json      组件清单（已脱敏：只留元数据，剥掉本机路径）
-│   ├── 配色板.json          969 条参考图的实解码配色（随包分发，CI 无 ffmpeg 无法重算）
+│   ├── 配色板.json          915 条参考图的实解码配色（随包分发，CI 无 ffmpeg 无法重算）
 │   ├── atlas-image-credits.json  504 张 atlas 主图的逐条授权判读
 │   └── third-party-exclusion.json  被剔除的第三方素材清单（SHA-256）+ 剔除统计
 ├── assets/                参考图（refs 字段存的是相对本目录的路径）
-│   ├── 风格参考图/          530 张   atlas 主图（38 张版权保留已剔除）+ 本地风格截图 + 24 张画风卡 + 自产参考板
+│   ├── 风格参考图/          514 张   atlas 主图（54 张版权保留已剔除）+ 本地风格截图 + 24 张画风卡 + 自产参考板
 │   ├── 动效预览图/          436 个   216 条的静态海报帧 + 循环动图 + 2 条工程实拍
 │   ├── 动效参考图/          130 张   本地动效与组件的规格卡
 │   └── 光影参考图/          53 张    自产布光示意图
@@ -251,11 +251,11 @@ npm run render:verify    # 用 ImageDecoder 逐个校验动图帧数
   （路径 / 内容哈希 / 引用三道防线）。清单与执行结果见 [`docs/第三方素材剔除记录.md`](docs/第三方素材剔除记录.md)
   与 `data/third-party-exclusion.json`
 
-> ⚠ 504 张 atlas 主参考图的判读结果：**358 张可再分发**（公有领域 / CC0 / CC 署名类），
-> **38 张版权保留**（Disney、Paramount、Warner、Universal、MGM、Lucasfilm/ILM、Snap、Stability AI、Man Ray Trust、DACS 等），
-> 71 张无明示授权，37 张为 Atlas 自制但未公开发布授权条款。
+> ⚠ 504 张 atlas 主参考图的判读结果：**361 张可再分发**（公有领域 / CC0 / CC 署名类 / GFDL），
+> **54 张版权保留**（Disney、Paramount、Warner、Universal、MGM、Lucasfilm/ILM、Snap、Stability AI、Man Ray Trust、DACS 等），
+> 52 张无明示授权，37 张为 Atlas 自制但未公开发布授权条款。
 >
-> **那 38 张版权保留主图已在本仓库中剔除**（构建时自动执行，见 `npm run verify` 的
+> **那 54 张版权保留主图已在本仓库中剔除**（构建时自动执行，见 `npm run verify` 的
 > 「版权保留主图未随包分发」断言）。它们的条目文本、提示词、来源链接与逐条署名
 > **完整保留**在 `data/风格库.json` 与 `docs/图源署名.md` 里，只是不含图片文件。
 > 涉及的条目在图鉴里会标注「主图版权保留，未随包分发」。
@@ -289,7 +289,7 @@ npm run render:verify    # 用 ImageDecoder 逐个校验动图帧数
 |---|---|
 | 任何个人作品库（成片、工程文件、第三方原片） | 这是**参考库**，不是作品库；个人内容属于你 |
 | 本机绝对路径与用户名 | 全部脱敏为 `<私有工程>/…`；`npm run verify` 与泄露扫描逐条断言 |
-| 38 张版权保留的 atlas 主图 | 构建时自动剔除；条目、提示词与署名完整保留 |
+| 54 张版权保留的 atlas 主图 | 构建时自动剔除；条目、提示词与署名完整保留 |
 | 第三方素材 | 按路径 + SHA-256 + 引用三道防线剔除，清单见 `data/third-party-exclusion.json` |
 
 ---

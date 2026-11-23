@@ -40,23 +40,27 @@ atlas 自己的 SKILL.md 写明：
 > Keep image author, source, and license with reused images;
 > **public access does not imply unrestricted image licensing.**
 
-逐条判读结果（判读从严：拿不准即归「无明示授权」；`credit` 里出现 © 署名即判为版权保留）：
+逐条判读结果（判读从严：拿不准即归「无明示授权」）：
+
+判为**版权保留**的信号有四类——credit 明确写版权保留或带 © 署名；点名商业影视公司 / 工作室与版权权利人；
+credit 自己写明 `no open license stated`；以及其它表明画面归属他人的表述。
 
 | 判读类别 | 数量 | 再分发 |
 |---|---:|---|
-| 公有领域 | 174 | ✅ 可（建议保留署名） |
+| 公有领域 | 175 | ✅ 可（建议保留署名） |
 | CC 署名类 | 94 | ⚠️ 需署名；BY-SA 还要求衍生作品同授权 |
 | CC0 | 90 | ✅ 可（建议保留署名） |
-| 无明示授权 | 71 | ⚠️ 需人工判读 |
+| GFDL | 2 | ⚠️ 可，但需附 GFDL 全文并同授权 |
+| 无明示授权 | 52 | ⚠️ 需人工判读 |
 | Atlas 自制插画（未公开发布授权条款） | 37 | ⚠️ 需单独确认 |
-| **版权保留** | **38** | ❌ **未经权利人许可不得再分发** |
+| **版权保留** | **54** | ❌ **未经权利人许可不得再分发** |
 
-38 条版权保留里包含 Disney、Paramount、Warner Bros.、Universal、MGM、Lucasfilm / ILM、
+54 条版权保留里包含 Disney、Paramount、Warner Bros.、Universal、MGM、Lucasfilm / ILM、
 Snap Inc.、Stability AI、Man Ray Trust、VG Bild-Kunst、Estate of Roy Lichtenstein / DACS 等权利方的署名。
 
 逐条清单见 [`docs/图源署名.md`](docs/图源署名.md)，机器可读版本见 `data/atlas-image-credits.json`。
 
-**那 38 张版权保留的主图已在本仓库中剔除**（构建时自动执行）：
+**那 54 张版权保留的主图已在本仓库中剔除**（构建时自动执行）：
 
 ```bash
 npm run verify   # 断言「版权保留主图未随包分发」
@@ -70,7 +74,7 @@ npm run verify   # 断言「版权保留主图未随包分发」
 npm run strip:restricted:dry   # 先看清单，不改文件
 npm run strip:restricted        # 删掉「版权保留」的主图，并把对应条目的参考图置空
 ```
-「无明示授权」的 71 条与「Atlas 自制」的 37 条不在自动剔除范围内，需自行确认后再决定是否保留。
+「无明示授权」的 52 条与「Atlas 自制」的 37 条不在自动剔除范围内，需自行确认后再决定是否保留。
 
 ## 自产内容
 

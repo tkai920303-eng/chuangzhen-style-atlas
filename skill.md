@@ -25,10 +25,10 @@ description: "查找视觉风格、动效语言与布光方案，产出可直接
 data/风格库.json            552 条
 data/动效库.json            370 条
 data/光影库.json            130 条
-data/配色板.json            969 条参考图的实解码配色（键 = 文件名）
+data/配色板.json            915 条参考图的实解码配色（键 = 文件名）
 data/atlas-image-credits.json  504 张 atlas 主图的逐条授权判读
 data/third-party-exclusion.json  被剔除的第三方素材清单（SHA-256）+ 剔除结果
-assets/风格参考图/           530 张   atlas 主图（38 张版权保留已剔除）+ 本地风格截图 + 24 张画风卡 + 自产参考板
+assets/风格参考图/           514 张   atlas 主图（54 张版权保留已剔除）+ 本地风格截图 + 24 张画风卡 + 自产参考板
 assets/动效预览图/           436 个   216 条的静态海报帧 + 循环动图 + 2 条工程实拍
 assets/动效参考图/           130 张   本地动效与组件的规格卡
 assets/光影参考图/           53 张    自产布光示意图
@@ -182,12 +182,12 @@ curl -O "http://127.0.0.1:5178/atlas-img/动效预览图/动效预览_motion_pop
 
    | 类别 | 数量 | 能否再分发 |
    |---|---:|---|
-   | 公有领域 / CC0 / CC 署名类 | 358 | ✅ 可，CC 署名类需保留署名，BY-SA 需同授权 |
-   | 无明示授权 | 71 | ⚠️ 需人工判读 |
+   | 公有领域 / CC0 / CC 署名类 / GFDL | 361 | ✅ 可，CC 署名类需保留署名，BY-SA 需同授权，GFDL 需附全文并同授权 |
+   | 无明示授权 | 52 | ⚠️ 需人工判读 |
    | Atlas 自制插画 | 37 | ⚠️ 需单独确认授权条款 |
-   | **版权保留** | **38** | ❌ **不可再分发——已在本仓库中剔除** |
+   | **版权保留** | **54** | ❌ **不可再分发——已在本仓库中剔除** |
 
-   那 38 条含 Disney、Paramount、Warner Bros.、Universal、MGM、Lucasfilm/ILM、Snap Inc.、
+   那 54 条含 Disney、Paramount、Warner Bros.、Universal、MGM、Lucasfilm/ILM、Snap Inc.、
    Stability AI、Man Ray Trust、Estate of Roy Lichtenstein/DACS 等权利方署名。
    **它们的图片文件不在本仓库里**（构建时自动剔除），但条目文本、提示词与署名信息完整保留；
    涉及的条目在 `data/*.json` 里带 `refsStripped: true` 标记。

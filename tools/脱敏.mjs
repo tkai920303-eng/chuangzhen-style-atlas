@@ -16,6 +16,8 @@
 //
 // 说明：本地素材库里的 JSON 保留**真实路径**（本地复现需要），
 // 只有导出的开源包会被脱敏。脱敏发生在 `04_工具\导出开源包.mjs`。
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const PLACEHOLDER = '<私有工程>';
 // 像 ID 的目录名：AI 工程 ID、纯十六进制长串
@@ -146,6 +148,64 @@ export function makeWorkNameSanitizer(workNames) {
     }
     return out;
   };
+}
+
+// ---------------------------------------------------------------------------
+// 本地作品名清单
+// ---------------------------------------------------------------------------
+
+// 素材投放区里的一级作品目录
+const WORK_DIRS = ['视频库', '创作资料库', '音频库', '图片库/第三方参考图'];
+// 同一件作品在库里的目录后缀变体（去掉后缀才是作品本名）
+const WORK_DIR_SUFFIXES = [
+  '_原片画面拆解报告', '_画面设计拆解包',
+  '_原片字幕与拆解报告', '_文案拆解包',
+];
+
+/**
+ * 收集本地全部「作品名」——两个来源都要，缺一不可：
+ *
+ *   1. `03_索引\works.json` —— **工程类**作品（本地各工程目录）
+ *   2. `02_素材` 下的作品目录 —— **素材库类**作品（第三方原片的拆解产物）
+ *
+ * 为什么必须加第 2 个来源：实测有一批第三方原片拆解作品的名字**一条都不在 works.json 里**
+ * （works.json 只登记工程类），但它们会随「第三方素材剔除清单」的路径一起进到公开包里，
+ * 而且 `isDistinctiveWorkName` 对它们全部判定为「有辨识度」——
+ * 也就是说名单本来就能识别它们，只是取名单的地方漏了一个来源。
+ *
+ * 发布包布局下没有 `02_素材` / `03_索引`，此时返回空表，调用方应静默跳过。
+ */
+export function collectLocalWorkNames(root) {
+  const names = new Set();
+  try {
+    const wj = JSON.parse(
+      fs.readFileSync(path.join(root, '03_索引', 'works.json'), 'utf8').replace(/^\uFEFF/, '')
+    );
+    for (const x of wj || []) {
+      const n = x.name || x.id || '';
+      if (n) names.add(n);
+    }
+  } catch {
+    // 没有 works.json（发布包布局）——不报错，静默跳过
+  }
+  for (const sub of WORK_DIRS) {
+    const dir = path.join(root, '02_素材', ...sub.split('/'));
+    if (!fs.existsSync(dir)) continue;
+    let entries = [];
+    try {
+      entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const e of entries) {
+      if (!e.isDirectory()) continue;
+      names.add(e.name);
+      for (const suf of WORK_DIR_SUFFIXES) {
+        if (e.name.endsWith(suf)) names.add(e.name.slice(0, -suf.length));
+      }
+    }
+  }
+  return [...names].filter(Boolean);
 }
 
 /** 批量脱敏对象里的若干路径字段 */
