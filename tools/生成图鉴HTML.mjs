@@ -20,6 +20,13 @@ const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8').replace(/^\uFEFF/,
 const styles = readJson(path.join(IDX, '风格库.json'));
 const motions = readJson(path.join(IDX, '动效库.json'));
 const lighting = readJson(path.join(IDX, '光影库.json'));
+// Vibe 画法库：知识短片的方法论库（MIT 上游 + 本项目蒸馏），可缺省（旧布局不生成该页签）
+let vibe = null;
+try {
+  vibe = readJson(path.join(IDX, 'Vibe画法库.json'));
+} catch {
+  console.warn('  ! 未找到 Vibe画法库.json，图鉴将不生成「Vibe 画法库」页签');
+}
 
 const DATA = {
   generatedAt: styles.generatedAt,
@@ -27,6 +34,9 @@ const DATA = {
   motions: { name: motions.name, counts: motions.counts, packs: motions.packs, items: motions.items },
   lighting: { name: lighting.name, counts: lighting.counts, categories: lighting.categories, items: lighting.items },
 };
+if (vibe) {
+  DATA.vibe = { name: vibe.name, counts: vibe.counts, items: vibe.items };
+}
 
 // 内联 JSON 的安全转义：避免 </script> 与 HTML 注释序列
 const BS = String.fromCharCode(92); // 反斜杠，避免源码里出现字面量转义
@@ -173,6 +183,7 @@ main{max-width:1680px;margin:0 auto;padding:0 22px 60px}
       <button data-tab="styles" class="on">风格库<span class="n" id="n-styles"></span></button>
       <button data-tab="motions">动效库<span class="n" id="n-motions"></span></button>
       <button data-tab="lighting">光影库<span class="n" id="n-lighting"></span></button>
+      ${vibe ? '<button data-tab="vibe">Vibe 画法库<span class="n" id="n-vibe"></span></button>' : ''}
     </div>
     <div class="search">
       <span class="icon">⌕</span>
@@ -225,12 +236,13 @@ let cat = '';
 let q = '';
 let shown = PAGE;
 const SRC_ZH = { local:'本地', atlas:'atlas', 'motion-prompt':'motion-prompt', web:'网络' };
-const CAT_KEY = { styles:'category', motions:'packName', lighting:'category' };
+const CAT_KEY = { styles:'category', motions:'packName', lighting:'category', vibe:'category' };
 
 document.getElementById('stamp').textContent = '生成于 ' + new Date(DATA.generatedAt).toLocaleString('zh-CN', { hour12:false });
 document.getElementById('n-styles').textContent = DATA.styles.items.length;
 document.getElementById('n-motions').textContent = DATA.motions.items.length;
 document.getElementById('n-lighting').textContent = DATA.lighting.items.length;
+if (DATA.vibe) document.getElementById('n-vibe').textContent = DATA.vibe.items.length;
 
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const list = () => DATA[tab].items;
@@ -248,7 +260,8 @@ function match(it){
     if(c !== cat) return false;
   }
   if(!q) return true;
-  const s = (it.name+' '+(it.nameEn||'')+' '+(it.tags||[]).join(' ')+' '+(it.category||'')+' '+(it.packName||'')+' '+(it.prompt||'')).toLowerCase();
+  const s = (it.name+' '+(it.nameEn||'')+' '+(it.tags||[]).join(' ')+' '+(it.category||'')+' '+(it.packName||'')+' '+(it.prompt||'')
+    +' '+(it.theme||'')+' '+(it.kind||'')+' '+(it.detail?JSON.stringify(it.detail):'')).toLowerCase();
   return s.includes(q);
 }
 function swatches(it){
@@ -256,11 +269,21 @@ function swatches(it){
   if(!p.length) return '';
   return '<div class="swatches">' + p.slice(0,8).map(c=>'<span class="sw" style="background:'+esc(c.hex)+'" title="'+esc(c.hex)+'"></span>').join('') + '</div>';
 }
+function srcLabel(it){
+  const s = it.source;
+  if(!s) return '';
+  if(typeof s === 'object') return s.project || '';
+  return SRC_ZH[s] || s;
+}
 function onImgErr(el){ el.parentNode.innerHTML = '<div class="ph">图片不可用</div>'; }
 function thumb(it){
   const r = (it.refs||[])[0];
-  const tag = it.source ? SRC_ZH[it.source] || it.source : '';
+  const tag = srcLabel(it);
   if(!r) {
+    if (tab === 'vibe') {
+      return '<div class="thumb"><div class="ph"><b style="font-size:13px;color:var(--fg2)">'+esc(it.category||'')+'</b><br>'+esc(it.kind||'')+'</div>'
+        + (tag?'<span class="tag">'+esc(tag)+'</span>':'') + '</div>';
+    }
     const why = it.refsStripped ? '主图版权保留<br>未随包分发' : '无参考图';
     return '<div class="thumb"><div class="ph">' + why + '</div>' + (tag?'<span class="tag">'+esc(tag)+'</span>':'') + '</div>';
   }
@@ -273,7 +296,7 @@ function render(){
   const items = list().filter(match);
   document.getElementById('cnt').textContent = items.length;
   const srcs = {};
-  for(const it of list()) srcs[SRC_ZH[it.source]||it.source] = (srcs[SRC_ZH[it.source]||it.source]||0)+1;
+  for(const it of list()){ const k = srcLabel(it) || '未标注'; srcs[k] = (srcs[k]||0)+1; }
   document.getElementById('srcInfo').textContent = '来源：' + Object.entries(srcs).map(([k,v])=>k+' '+v).join(' · ');
   document.getElementById('cntInfo').textContent = tab==='motions' ? '（含白模版条目 '+list().filter(x=>x.whitened).length+' 条）' : '';
 
@@ -282,7 +305,7 @@ function render(){
     '<article class="card" data-i="'+i+'">'+thumb(it)+
     '<div class="body"><div class="nm">'+esc(it.name)+'</div>'+
     (it.nameEn?'<div class="en">'+esc(it.nameEn)+'</div>':'')+
-    '<div class="ds">'+esc(it.summary||it.meaning||it.effect||it.description||it.visual||it.use||'')+'</div>'+
+    '<div class="ds">'+esc(it.summary||it.meaning||it.effect||it.description||it.visual||it.use||it.theme||'')+'</div>'+
     swatches(it)+'</div></article>'
   ).join('') || '<div class="empty"><b>没有匹配的条目</b>换个关键词，或清空分类筛选</div>';
 
@@ -321,11 +344,15 @@ function openDrawer(it){
   if(it.refsStripped) html += '<div class="credit"><b>主图未随包分发</b>：主参考图为「' + esc(it.imageLicense || '版权保留') + '」，不随本仓库再分发；条目文本、提示词与署名信息完整保留。</div>';
   // 主参考图的出处与授权（atlas 条目的 credit 是唯一的权利声明来源）
   if(it.credit){
+    // 有图（或图被剔掉）时才叫「主图出处」，并附再分发提示；
+    // 没有图的条目（如 Vibe 方法条目）只标「出处」——那是**方法论**的出处，
+    // 别让它看起来像在提示某张图的授权风险。
+    const hasImg = !!(it.refs && it.refs.length) || !!it.preview || !!it.refsStripped;
     const cls = it.imageLicense || '';
     const red = it.imageRedistributable;
-    const warn = (red === false || red === '需授权' || red === '需人工判读')
+    const warn = (hasImg && (red === false || red === '需授权' || red === '需人工判读'))
       ? ' <span class="warn">· 再分发受限，商用前请逐条核对</span>' : '';
-    html += '<div class="credit"><b>主图出处</b>：'+esc(it.credit)
+    html += '<div class="credit"><b>' + (hasImg ? '主图出处' : '出处') + '</b>：'+esc(it.credit)
       + (cls ? '（'+esc(cls)+'）' : '') + warn + '</div>';
   }
   // 动效条目：附循环动图，点开抽屉即可看真实运动
@@ -334,7 +361,7 @@ function openDrawer(it){
   html += kv([
     ['分类', it.category || it.packName],
     ['英文名', it.nameEn],
-    ['来源', SRC_ZH[it.source]||it.source],
+    ['来源', srcLabel(it)],
     ['授权', it.license],
     ['状态', it.status],
     ['出处', it.sourcePath || it.sourceUrl],
@@ -373,6 +400,27 @@ function openDrawer(it){
     html += pre('效果说明', it.effect);
     if(it.useCases && it.useCases.length) html += pre('适用场景', it.useCases.join('\\n'));
   }
+  if(tab==='vibe'){
+    html += pre('这条解决什么', it.theme);
+    const d = it.detail || {};
+    for(const [k,v] of Object.entries(d)){
+      if(Array.isArray(v)) html += pre(k, v.join('\\n'));
+      else html += pre(k, v);
+    }
+    if(it.refs && it.refs.length){
+      html += '<div class="sec"><h3>参考图</h3><div class="gal">' + it.refs.map(r=>{
+        const cr = '上游自有题目的样片拼图 · HeyChengC / vibe-knowledge-film';
+        return '<figure><img loading="lazy" src="'+esc(imgUrl(r))+'" alt="'+esc(it.name)+' 参考图" title="'+esc(cr)+'">'
+          + '<figcaption>'+esc(cr)+'</figcaption></figure>';
+      }).join('') + '</div></div>';
+    }
+    if(it.source && it.source.repo){
+      html += '<div class="sec"><h3>上游出处</h3><div class="links"><a href="'+esc(it.source.repo)+'" target="_blank" rel="noopener">'+esc(it.source.repo)+'</a>'
+        + '<span class="tag" style="margin-left:8px">commit '+esc(String(it.source.commit||'').slice(0,7))+'</span></div>'
+        + '<p style="margin-top:8px;color:var(--fg3);font-size:12px">上游文件：<code>'+esc(it.source.path||'')+'</code>｜'
+        + esc(it.credit||'')+'｜方法论与代码按 ' + esc(it.license||'') + ' 分发。</p></div>';
+    }
+  }
 
   if(it.whitened){
     html += '<div class="sec"><h3>白模版 · 去风格化</h3><div class="pre"><span class="lb">'+
@@ -404,6 +452,13 @@ function openDrawer(it){
     if(it.code) acts.push(['copy','复制元素代码', it.code.body]);
   }
   if(tab==='lighting') acts.push(['copy','复制光影提示词', it.prompt]);
+  if(tab==='vibe'){
+    // 注意：本文件整体是模板字符串，换行必须写成 \\n，否则生成出来的 JS 会是语法错误
+    const md = '## ' + (it.name||'') + '\\n\\n' + (it.theme||'') + '\\n\\n'
+      + Object.entries(it.detail||{}).map(([k,v])=>'### '+k+'\\n'+(Array.isArray(v)?v.map(x=>'- '+x).join('\\n'):v)).join('\\n\\n')
+      + '\\n\\n---\\n出处：' + ((it.source&&it.source.repo)||'') + '（' + (it.license||'') + '）';
+    acts.push(['copy','复制这条方法', md]);
+  }
   html += '<div class="dacts">' + acts.map((a,i)=>'<button class="btn '+(i===0?'pri':'')+'" data-act="'+i+'">'+esc(a[1])+'</button>').join('') + '</div>';
 
   db.innerHTML = html;
@@ -490,7 +545,8 @@ render();
 fs.writeFileSync(OUT, html, 'utf8');
 const size = (Buffer.byteLength(html) / 1048576).toFixed(2);
 console.log(`已生成 ${OUT}`);
-console.log(`体积 ${size} MB；风格 ${DATA.styles.items.length} / 动效 ${DATA.motions.items.length} / 光影 ${DATA.lighting.items.length}`);
+console.log(`体积 ${size} MB；风格 ${DATA.styles.items.length} / 动效 ${DATA.motions.items.length} / 光影 ${DATA.lighting.items.length}`
+  + (DATA.vibe ? ` / Vibe 画法 ${DATA.vibe.items.length}` : ''));
 
 // 自检：抽出内联 <script> 做语法检查，防止模板字符串吃掉转义导致运行时报错
 const m = html.match(/<script>([\s\S]*?)<\/script>/);

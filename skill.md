@@ -25,6 +25,8 @@ description: "查找视觉风格、动效语言与布光方案，产出可直接
 data/风格库.json            552 条
 data/动效库.json            370 条
 data/光影库.json            130 条
+data/Vibe画法库.json        26 条   知识短片方法条目（六种画法 / 画面语法 / 外观规格 / 分镜表 / 引擎件）
+data/vibe件清单.json        VKit 25 件 + VK 核心 API 21 项（从上游代码实际解析）
 data/配色板.json            915 条参考图的实解码配色（键 = 文件名）
 data/atlas-image-credits.json  504 张 atlas 主图的逐条授权判读
 data/third-party-exclusion.json  被剔除的第三方素材清单（SHA-256）+ 剔除结果
@@ -33,6 +35,8 @@ assets/动效预览图/           436 个   216 条的静态海报帧 + 循环�
 assets/动效参考图/           130 张   本地动效与组件的规格卡
 assets/光影参考图/           53 张    自产布光示意图
 tools/检索.mjs               离线检索（推荐入口）
+tools/检索Vibe画法.mjs       Vibe 画法库离线检索（两层命中 + --kit 件清单）
+tools/vibe引擎/              上游 MIT 件库源码（vk.js / vk-kit.js）+ 许可 + 说明
 我的作品/                    （可选）用户自己扫描的作品索引，在 .gitignore 里，不入库
 ```
 
@@ -64,9 +68,10 @@ npm start        # → http://127.0.0.1:5178（PORT / HOST 环境变量可改）
 ```
 
 ```sh
-curl http://127.0.0.1:5178/api/atlas                     # 三库概要与分类列表
+curl http://127.0.0.1:5178/api/atlas                     # 四库概要与分类列表
 curl "http://127.0.0.1:5178/api/atlas/styles?q=bloom"    # 搜索
 curl "http://127.0.0.1:5178/api/atlas/motions?cat=镜头运动"  # 分类（精确匹配）
+curl "http://127.0.0.1:5178/api/atlas/vibe?q=转场"          # Vibe 画法库
 ```
 
 `?cat=` 是**精确匹配**，分类名先从 `/api/atlas` 的 `libs.<库>.categories` 里取。
@@ -144,6 +149,37 @@ curl "http://127.0.0.1:5178/api/atlas/motions?cat=镜头运动"  # 分类（精�
 部分条目的 `direction` / `hardness` / `ratio` / `colorTemp` 为空（源数据未给离散参数），
 这种情况直接用 `prompt`。
 
+### Vibe 画法库
+
+方法条目，**没有 `prompt`**，正文在 `detail` 里（每个子键是一条可直接执行的规则）：
+
+```jsonc
+{
+  "id": "vibe-grammar-transition",
+  "name": "镜头接法 · 10 种转场",
+  "kind": "转场", "category": "画面语法",
+  "theme": "镜头之间几乎没有硬切，新画面是从旧画面里「长出来」的。",
+  "tags": ["转场", "溶解", "闪", "压暗", "推近"],
+  "source": { "project": "vibe-knowledge-film", "repo": "https://github.com/HeyChengC/vibe-knowledge-film",
+              "commit": "62d5150…", "path": "references/visual-grammar.md" },
+  "license": "MIT（上游方法文档与引擎代码）",
+  "credit": "HeyChengC / vibe-knowledge-film",
+  "detail": { "溶解": "旧的淡出、新的淡入，重叠一半｜0.5–0.7s｜默认。", "闪": "…" },
+  "palette": [{ "role": "主体字", "hex": "#F8F9F8", "note": "C 夜曲主文字白" }],
+  "refs": []
+}
+```
+
+- 取用方法：`detail` 的每个键就是一条规则，`palette` 是配色 token；
+- 上游出处见 `source.repo` + `source.commit`，引用时请带上；
+- 引擎件名表另见 `data/vibe件清单.json`（`window.VKit.*` 25 件 / `window.VK.*` 21 项）。
+
+```sh
+node tools/检索Vibe画法.mjs 转场          # 关键词检索（两层命中）
+node tools/检索Vibe画法.mjs --kit         # 只出件清单
+node tools/检索Vibe画法.mjs --list        # 全部条目
+```
+
 ---
 
 ## 取参考图
@@ -201,6 +237,12 @@ curl -O "http://127.0.0.1:5178/atlas-img/动效预览图/动效预览_motion_pop
 6. **第三方作品已剔除**：本地库保留第三方素材供检索与复刻参考，发布包一律剔除（路径 / 内容哈希 / 引用三道防线）。
    被剔除文件的 SHA-256 与统计见 `data/third-party-exclusion.json`，逐条说明见 `docs/第三方素材剔除记录.md`。
    包内若出现与该清单哈希相同的文件，即为剔除失效，属发布事故。
+7. **Vibe 画法库为 MIT 上游**：方法条目可自由引用与再分发，但请带上出处
+   `HeyChengC/vibe-knowledge-film`（见条目 `source.repo` / `source.commit`）；
+   引擎件源码的 MIT 声明在 `tools/vibe引擎/LICENSE`，字体许可在同目录的 OFL 文本。
+   上游仓库里「按他人成片填好的 brief」与两段复刻片**字幕与画面设计属原作者，未收录、未随包分发**。
+   上游的**样片拼图与样例分镜表也未随包分发**——上游 MIT 只授权「引擎、脚本和文档里的方法说明」，
+   未列举 `examples/` 下的图。包内因此没有 Vibe 的参考图，条目以文字规则 + 配色 token 呈现。
 
 > 受限主图已在构建时自动剔除；仓库维护者若要再清一次：`npm run strip:restricted`（幂等，先用 `npm run strip:restricted:dry` 看清单）。
 

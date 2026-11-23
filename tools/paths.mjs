@@ -69,6 +69,8 @@ export const IMG_STYLE = '风格参考图';
 export const IMG_MOTION = '动效预览图';
 export const IMG_MOTION_CARD = '动效参考图';
 export const IMG_LIGHT = '光影参考图';
+// 注：vibe 的样片图在本地库是 02_素材\图片库\知识短片参考图\，但**不随开源包分发**
+// （上游 MIT 授权未覆盖 examples/ 下的图），所以这里没有对应的导出目录常量。
 
 /** 把裸文件名转成「相对参考图根目录」的路径，正斜杠分隔 */
 export const rel = (dir, file) => (file.includes('/') ? file : `${dir}/${file}`);

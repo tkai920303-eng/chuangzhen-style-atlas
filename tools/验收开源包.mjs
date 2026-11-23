@@ -89,9 +89,10 @@ check('健康检查 ok', health.status === 200 && JSON.parse(health.body).ok ===
 const api = await req('/api/atlas');
 const apiJson = JSON.parse(api.body);
 check('库概要三库齐全', api.status === 200 && ['styles', 'motions', 'lighting'].every((k) => apiJson.libs[k]));
+check('库概要含 Vibe 画法库', api.status === 200 && !!apiJson.libs.vibe);
 console.log(
   '  条目数：' +
-    ['styles', 'motions', 'lighting'].map((k) => `${k}=${apiJson.libs[k]?.counts?.total ?? '?'}`).join('  ')
+    ['styles', 'motions', 'lighting', 'vibe'].map((k) => `${k}=${apiJson.libs[k]?.counts?.total ?? apiJson.libs[k]?.counts?.items ?? '?'}`).join('  ')
 );
 const all = await req('/api/atlas/styles');
 const allJson = JSON.parse(all.body);
@@ -108,8 +109,14 @@ const qMotion = await req('/api/atlas/motions?q=' + encodeURIComponent('pop-in')
 check('动效库可搜索', qMotion.status === 200 && JSON.parse(qMotion.body).total > 0, `total=${JSON.parse(qMotion.body).total}`);
 const unknown = await req('/api/atlas/nope');
 check('未知库名 404', unknown.status === 404);
+const vibeAll = await req('/api/atlas/vibe');
+const vibeJson = JSON.parse(vibeAll.body);
+check('Vibe 画法库可取', vibeAll.status === 200 && vibeJson.total > 0, `total=${vibeJson.total}`);
+const vibeQ = await req('/api/atlas/vibe?q=' + encodeURIComponent('转场'));
+check('Vibe 画法库可搜索', vibeQ.status === 200 && JSON.parse(vibeQ.body).total > 0, `total=${JSON.parse(vibeQ.body).total}`);
 
 console.log('\n=== 3. 参考图 ===');
+// 注意：上游 vibe 的样片图未获再分发授权，不随包分发，因此这里没有「知识短片参考图」
 const imgDirs = ['风格参考图', '动效预览图', '动效参考图', '光影参考图'];
 for (const d of imgDirs) {
   const dir = path.join(PKG, 'assets', d);

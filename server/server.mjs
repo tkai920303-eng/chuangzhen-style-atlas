@@ -25,6 +25,7 @@ const LIBS = {
   styles: path.join(DATA, '风格库.json'),
   motions: path.join(DATA, '动效库.json'),
   lighting: path.join(DATA, '光影库.json'),
+  vibe: path.join(DATA, 'Vibe画法库.json'),
 };
 
 const MIME = {
@@ -163,7 +164,8 @@ function filterLib(doc, q, cat) {
   if (q) {
     const needle = q.toLowerCase();
     items = items.filter((x) =>
-      [x.name, x.nameEn, x.id, x.category, x.description, x.meaning, x.prompt, (x.tags || []).join(' ')]
+      [x.name, x.nameEn, x.id, x.category, x.description, x.meaning, x.prompt, x.theme, x.kind,
+        (x.tags || []).join(' '), x.detail ? JSON.stringify(x.detail) : '']
         .filter(Boolean)
         .join(' ')
         .toLowerCase()

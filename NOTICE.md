@@ -31,6 +31,7 @@
 | [XO3D Labs](https://labs.xo3d.co.uk/lighting-rig-library/) | 24 套布光方案的参数（光位、仰角、光比、色温） | 免费工具，页面注明 © XO3D Ltd | **未复制其图片**，仅使用参数并据此**自产**示意图 |
 | [Filmfarm](https://filmfarm.de/zh/key-light-2) | 光影术语、自然光、人物光位的文字描述 | 公开网页内容 | **未复制其图片**，仅使用文字参数并据此**自产**示意图 |
 | [LabNol](https://www.labnol.com/photography/portrait-lighting) | 人物光位的文字描述 | 公开网页内容 | 同上 |
+| [HeyChengC/vibe-knowledge-film](https://github.com/HeyChengC/vibe-knowledge-film) | **Vibe 画法库**的方法条目（`data/Vibe画法库.json`）、件名表（`data/vibe件清单.json`）、引擎件源码（`tools/vibe引擎/`） | **MIT**（引擎件源码随 `tools/vibe引擎/LICENSE`）；字体为 **SIL OFL** | 方法条目由本项目**重新组织与转述**（不逐句复制上游参考片的字幕原文）；引擎件源码原样分发并保留 MIT 声明 |
 
 ## ⚠️ atlas 主参考图：逐条授权不同
 
@@ -75,6 +76,33 @@ npm run strip:restricted:dry   # 先看清单，不改文件
 npm run strip:restricted        # 删掉「版权保留」的主图，并把对应条目的参考图置空
 ```
 「无明示授权」的 52 条与「Atlas 自制」的 37 条不在自动剔除范围内，需自行确认后再决定是否保留。
+
+## ⚠️ Vibe 画法库：上游的分段许可
+
+「Vibe 画法库」（`data/Vibe画法库.json`）来自开源项目
+[HeyChengC/vibe-knowledge-film](https://github.com/HeyChengC/vibe-knowledge-film)。
+上游的许可声明是**按段**给的，不是整仓一个许可：
+
+> 引擎、脚本和文档里的方法说明使用 MIT 许可，见 `LICENSE`。
+> `references/analysis.md`、`references/prompts.md` 里按成片填好的 brief，
+> 以及 `examples/stim_B`、`info_C`，字幕和画面设计来自他人的短片，版权属于原作者。
+
+因此本仓库的处理是：
+
+| 上游内容 | 处置 |
+|---|---|
+| 引擎代码（`vk.js` / `vk-kit.js`，MIT） | **随包分发**于 `tools/vibe引擎/`，MIT 声明见同目录 `LICENSE` |
+| 方法说明文档（MIT） | **只留本地，原文不随包分发**——这些文档通篇引用他人短片的字幕原句作讲解例子；本仓库改为在 `data/Vibe画法库.json` 里**重新组织与转述**，只留方法规则与参数 |
+| `references/analysis.md` / `references/prompts.md`（版权属原作者） | **只入本地对照目录**（便于学习对照），**未进入公开包** |
+| `examples/stim_B` / `examples/info_C` 及其截图（版权属原作者） | **只入本地对照目录**（便于学习对照），**未进入公开包** |
+| 上游自有题目的样片拼图（4 张） | **未随包分发**——上游的 MIT 授权是枚举式的，只覆盖「引擎、脚本和文档里的方法说明」，未列举 `examples/` 下的图；`examples/README.md` 亦明写「能带走的是做法，不是画面」。本仓库按「无明示再分发授权不外发」处理，只在本地库留存 |
+| 字体（Noto Serif/Sans SC、Cormorant Garamond、Lora、JetBrains Mono、Courier Prime） | 字体文件不入包；许可文本（SIL OFL）随引擎件分发 |
+
+> 上游文档的完整原文在其仓库内（MIT）。本仓库只做**方法层面**的转述，
+> 不复制他人短片的字幕与画面设计。需要完整原文请直接取上游仓库。
+
+`npm run verify` 有一条断言「**包内无版权受限文件（brief / 复刻片）**」，
+按 SHA-256 逐文件比对本地库保留的受限目录，防止它们被误带进公开包。
 
 ## 自产内容
 
