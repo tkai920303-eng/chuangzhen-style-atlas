@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>素材风格图鉴</title>
+<style>
+:root{--bg:#0e1014;--panel:#161a21;--line:#252b35;--fg:#e8eaed;--fg2:#a9b0bb;--fg3:#6f7783;--accent:#4fd1c5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.7 system-ui,-apple-system,"Microsoft YaHei",sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:56px 24px 80px}
+h1{font-size:34px;margin:0 0 10px;letter-spacing:-.02em}
+.sub{color:var(--fg2);margin:0 0 34px;font-size:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:0 0 38px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.card .n{font-size:30px;font-weight:650;color:var(--accent);font-variant-numeric:tabular-nums}
+.card .t{color:var(--fg2);font-size:13.5px;margin-top:4px}
+.card .d{color:var(--fg3);font-size:12.5px;margin-top:8px;line-height:1.6}
+.cta{display:inline-block;background:var(--accent);color:#06231f;font-weight:650;text-decoration:none;padding:13px 26px;border-radius:9px;font-size:16px}
+.cta:hover{filter:brightness(1.08)}
+h2{font-size:17px;margin:40px 0 14px;color:var(--fg)}
+ul{margin:0;padding-left:20px;color:var(--fg2)}
+li{margin:7px 0}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-size:13px;color:var(--accent);font-family:ui-monospace,Consolas,monospace}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow-x:auto;color:var(--fg2);font-size:13.5px;line-height:1.75}
+pre code{background:none;border:none;padding:0;color:inherit}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--fg3);font-size:13px}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>素材风格图鉴</h1>
+  <p class="sub">视觉风格 · 动效语言 · 光影布光 —— 三个可直接复制使用的参考库，每条都带参考图与成品提示词。</p>
+
+  <div class="stats" id="stats"><div class="card"><div class="n">…</div><div class="t">加载中</div></div></div>
+
+  <p><a class="cta" href="/atlas">打开视觉参考图鉴 →</a></p>
+
+  <h2>这是什么</h2>
+  <ul>
+    <li><b>风格库</b>：画面 / 配色 / 动法 / 光影四位一体的风格条目，每条给出可直接投喂给绘图或动效模型的提示词。</li>
+    <li><b>动效库</b>：运动语言条目，附时序、缓动、幅度三段参数，并提供去风格化的「白模版」，方便与任意风格混搭。</li>
+    <li><b>光影库</b>：光位、光质、光比、色温，配自产的布光示意图。</li>
+    <li>每个条目都能一键复制提示词；动效条目在详情里可以直接播放循环预览动图。</li>
+  </ul>
+
+  <h2>本地运行</h2>
+  <pre><code>npm install     # 运行时零依赖，仅预览渲染工具需要 playwright-core
+npm start       # 启动后打开 http://127.0.0.1:5178/atlas
+npm run verify  # 校验三库结构、参考图引用与图鉴产物</code></pre>
+
+  <h2>接口</h2>
+  <pre><code>GET /api/atlas                 三个库的概要与分类
+GET /api/atlas/styles            风格库全量（?q= 搜索，?cat= 分类）
+GET /api/atlas/motions           动效库全量
+GET /api/atlas/lighting          光影库全量
+GET /atlas-img/&lt;目录&gt;/&lt;文件&gt;   参考图</code></pre>
+
+  <footer id="foot">素材风格图鉴 · 零第三方依赖的本地素材库</footer>
+</div>
+<script>
+fetch('/api/atlas').then(r=>r.json()).then(d=>{
+  const L=d.libs||{};
+  const rows=[
+    ['styles','风格库','视觉风格条目，含画面 / 配色 / 动法 / 光影'],
+    ['motions','动效库','运动语言条目，附白模版与循环预览'],
+    ['lighting','光影库','光位 / 光质 / 光比 / 色温'],
+  ];
+  document.getElementById('stats').innerHTML=rows.map(([k,t,desc])=>{
+    const lib=L[k]||{};const c=lib.counts||{};const n=c.total!==undefined?c.total:(c.items||0);
+    return `<div class="card"><div class="n">${n}</div><div class="t">${t}</div><div class="d">${desc}</div></div>`;
+  }).join('');
+}).catch(()=>{
+  document.getElementById('stats').innerHTML='<div class="card"><div class="n">–</div><div class="t">库数据读取失败</div></div>';
+});
+</script>
+</body>
+</html>

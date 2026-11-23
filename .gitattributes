@@ -1,0 +1,19 @@
+# 换行统一：仓库内存 LF，检出也不转换。
+#
+# 为什么需要：Windows 上 git 的 core.autocrlf 默认开启，
+# 检出后文本文件会变成 CRLF，再重新生成图鉴就会产生「假 diff」——
+# 既干扰本地核对，也让 CI 的 `git diff --exit-code` 检查变脆。
+* text=auto eol=lf
+
+# 二进制资源：不做任何换行转换
+*.png binary
+*.webp binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.mp4 binary
+*.wav binary
+*.zip binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

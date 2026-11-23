@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 安装依赖
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+
+      - name: 校验三库结构、参考图引用与图鉴产物
+        run: npm run verify
+
+      - name: 校验图鉴可重新生成且产物一致
+        run: |
+          node tools/生成图鉴HTML.mjs
+          if ! git diff --quiet -- server/public/atlas.html; then
+            echo "::error::server/public/atlas.html 与重新生成的结果不一致"
+            git diff --stat -- server/public/atlas.html
+            exit 1
+          fi
+
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 冒烟测试（页面 / 接口 / 参考图 / 目录穿越）
+        run: npm run smoke

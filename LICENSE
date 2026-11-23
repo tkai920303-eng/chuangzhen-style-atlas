@@ -1,0 +1,34 @@
+MIT License
+
+Copyright (c) 2026 tkai920303-eng
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+本仓库包含的第三方内容（Atlas of Visual Effects 参考图与效果指令、motion-prompt 元素代码与画风卡等）
+**不适用**上述 MIT 条款。其授权见：
+
+- `NOTICE.md` —— 逐来源授权说明
+- `docs/图源署名.md` 与 `data/atlas-image-credits.json` —— atlas 主参考图的逐条判读
+- `docs/数据来源与授权.md` —— 全部来源与自产内容清单
+- `data/*.json` 各条目的 `license` / `credit` / `imageLicense` / `imageRedistributable` / `gallery[].license` 字段
+
+其中 atlas 主参考图**逐条授权不同**，部分条目的权利声明为「版权保留」或未明示可再分发的许可。
+商业使用前必须逐条核对，详见 `docs/图源署名.md`。

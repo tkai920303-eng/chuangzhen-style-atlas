@@ -1,0 +1,40 @@
+{
+  "name": "chuangzhen-style-atlas",
+  "version": "1.0.0",
+  "description": "素材风格图鉴：风格库 / 动效库 / 光影库三个可复制的参考库，每条都带参考图与成品提示词",
+  "type": "module",
+  "license": "MIT",
+  "author": "tkai920303-eng",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tkai920303-eng/chuangzhen-style-atlas.git"
+  },
+  "homepage": "https://github.com/tkai920303-eng/chuangzhen-style-atlas#readme",
+  "bugs": {
+    "url": "https://github.com/tkai920303-eng/chuangzhen-style-atlas/issues"
+  },
+  "keywords": ["design-system", "style-guide", "motion", "lighting", "prompt", "atlas", "素材库", "风格库", "动效库", "光影库"],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server/server.mjs",
+    "verify": "node tools/最终复核.mjs",
+    "smoke": "node tools/验收开源包.mjs",
+    "build:atlas": "node tools/生成图鉴HTML.mjs",
+    "fetch": "node tools/抓取外部数据源.mjs",
+    "fetch:artstyle": "node tools/下载画风参考图.mjs",
+    "palette": "node tools/提取配色.mjs",
+    "build": "node tools/构建三库.mjs",
+    "render:motion": "node tools/预览渲染/渲染动效预览.mjs",
+    "render:lighting": "node tools/预览渲染/渲染光影示意图.mjs",
+    "render:card": "node tools/预览渲染/渲染动效规格卡.mjs",
+    "render:verify": "node tools/预览渲染/验证动图.mjs",
+    "strip:restricted": "node tools/剔除受限主图.mjs",
+    "strip:restricted:dry": "node tools/剔除受限主图.mjs --dry-run",
+    "search": "node tools/检索.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "1.65.1"
+  }
+}
