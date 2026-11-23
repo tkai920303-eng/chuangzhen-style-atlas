@@ -3,6 +3,23 @@
 本仓库的**代码**采用 MIT 许可（见 `LICENSE`）。
 仓库内的**图片素材与条目文本**来自以下第三方来源，各自适用不同授权，请勿视为 MIT 内容。
 
+## ⚠️ 许可范围
+
+`LICENSE` 里的 MIT 条款**只覆盖本仓库的代码与自产内容**。
+
+本仓库包含的第三方内容（Atlas of Visual Effects 参考图与效果指令、motion-prompt 元素代码与画风卡等）
+**不适用**上述 MIT 条款。其授权见：
+
+- 本文档「来源一览」—— 逐来源授权说明
+- `docs/图源署名.md` 与 `data/atlas-image-credits.json` —— atlas 主参考图的逐条判读
+- `docs/数据来源与授权.md` —— 全部来源与自产内容清单
+- `data/*.json` 各条目的 `license` / `credit` / `imageLicense` / `imageRedistributable` / `gallery[].license` 字段
+
+其中 atlas 主参考图**逐条授权不同**，部分条目的权利声明为「版权保留」或未明示可再分发的许可。
+商业使用前必须逐条核对，详见 `docs/图源署名.md`。
+
+> 只读 `LICENSE` 就以为整个仓库都是 MIT，是最容易踩的坑。引用任何一张图之前，先按上面的路径查清它自己的授权。
+
 ## 来源一览
 
 | 来源 | 内容 | 授权 | 本仓库怎么用 |
