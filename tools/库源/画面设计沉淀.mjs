@@ -139,6 +139,106 @@ export const styles = [
     "mix": "与深蓝夜空底、金色数字、白色几何人物共享；与暖褐聚光风冲突。",
     "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-nodegold"
   }
+,
+{
+    "id": "vd-style-starfield-glyph",
+    "name": "暗场粒子成字",
+    "nameEn": "Starfield Particle Glyph",
+    "category": "暗场粒子",
+    "mechanism": "点云文字",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-starfield-glyph.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-starfield-glyph.jpg"
+    ],
+    "visual": "深蓝黑纯色底上铺一层静止金白星点，中央一个由数千个亮点汇聚拼成的大号数字；笔画由点的疏密构成而非实心填充，字外围仍留有零散星尘。",
+    "motion": "星点完全静止；数字由粒子汇聚而成——点先在画面里随机散布，再沿字形轮廓吸附到位；成型后整体带极轻的辉光呼吸；底部一条粒子拖尾细线缓慢生长。",
+    "lighting": "无方向性自发光：光源就是粒子本身（点与线的 bloom），底色无高光无投影，光比只存在于「亮点」与「底」之间。",
+    "texture": "颗粒感强，点径 2–3px 硬边无抗锯齿；底色干净无噪点，无材质纹理。",
+    "use": "知识类 MG 的标题卡与数字强调；需要「一个大数字压住画面」又不想用实心字形时；也适合「积累 / 天数 / 次数」这类抽象量。",
+    "migration": "用文字轮廓做遮罩、撒点吸附；点径 2–3px、密度按笔画宽度调，别用发光点代替实心字。",
+    "limitations": "点数上千时渲染成本高，手机端建议降到 1200 点以内；字形笔画太细时点会漏到轮廓外。",
+    "mix": "与暗底粒子、纯色卡片、细线图标共享同一套点云语言；不宜与实拍画面同屏。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-starfield-glyph"  }
+,
+{
+    "id": "vd-style-athlete-hud",
+    "name": "运动员数据 HUD",
+    "nameEn": "Athlete Telemetry HUD",
+    "category": "数据仪表",
+    "mechanism": "实时数据面板",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-athlete-hud.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-athlete-hud.jpg"
+    ],
+    "visual": "近黑底上四边被 HUD 面板压住：左上 LOCK 计数与 SPEED 速度，中上「目标·终点」剩余距离，右上终点直方图，左列「KILL 墨迹」百分比与空速/步速/圈速/自我怀疑四条，右下心率波形与 BPM；画面下半是一张 2D 透视网格地平面，网格上散着发光短条。",
+    "motion": "HUD 数值随时间跳变、进度条与心电波形滚动；地平线短条随速度向后滑动；主体在网格上奔跑。",
+    "lighting": "没有真实布光。光来自图形自发光：HUD 数字与描边、HUD 面板的细描边、网格短条都是纯色描边加 bloom；底色近纯黑。",
+    "texture": "全矢量：数字、描边、波形折线、网格直线，无任何材质纹理与噪点。",
+    "use": "把抽象的「努力 / 坚持 / 消耗」变成可计量的画面；适合励志、训练、比赛、进度类叙事。",
+    "migration": "先搭 HUD 再搭场景：HUD 是骨架，画面是填充。四个数字（速度 / 心率 / 剩余距离 / 进度百分比）各自对应一个叙事变量。",
+    "limitations": "面板信息量一大就抢戏；主叙事必须有一到两个数字是真的在动，否则像仪表盘演示。",
+    "mix": "与霓虹描边、暗底网格、线框主体共享同一套冷色语言；不宜与暖色纸质版面同屏。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-athlete-hud"  }
+,
+{
+    "id": "vd-style-neon-chain",
+    "name": "四色霓虹锁链",
+    "nameEn": "Four-Colour Neon Chains",
+    "category": "暗场霓虹",
+    "mechanism": "颜色语义编码",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-neon-chain.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-neon-chain.jpg"
+    ],
+    "visual": "近黑底上横着四条由椭圆轮廓串成的锁链，每条一种颜色：青蓝、品红、橙红、紫；链节描边均匀、尺寸一致，沿地面延伸或缠在主体上。画面里另有白色描边的线框主体与若干紫白色霓虹短条。",
+    "motion": "链节沿路径依次出现并沿路径延伸；主体在链之间穿行；短条随机漂移。",
+    "lighting": "没有真实布光。全部是描边自发光——每条链一种色，靠同色 bloom 浮在暗底上；画面里没有阴影与物体间的光照关系。",
+    "texture": "纯描边矢量：椭圆链节、折线主体、圆角短条，描边宽度均匀、无材质。",
+    "use": "把「欲望 / 妥协 / 嘲笑 / 自我怀疑」这类抽象束缚画成看得见的物件；也适合任何「一条链＝一种压力」的叙事。",
+    "migration": "先定颜色语义表（哪把链＝哪种阻力），再画链；链节尺寸与间距全片不变，观众靠颜色认得出来。",
+    "limitations": "颜色一多会乱，控制在四种以内；链节过密会糊成一条实线，过疏会像弹簧。",
+    "mix": "与运动员数据 HUD、暗底粒子共享同一套暗场霓虹语言；与纯色卡片版式不混。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-neon-chain"  }
+,
+{
+    "id": "vd-style-ink-mist",
+    "name": "墨绿雾原分层景",
+    "nameEn": "Ink-Green Mist Layers",
+    "category": "水墨雾气",
+    "mechanism": "分层剪影",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-ink-mist.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-ink-mist.jpg"
+    ],
+    "visual": "深墨绿柔边噪声雾作底，其上是三层暗色山峦剪影（越远越亮）；一条青绿细地平线横贯画面，线上等距排着一排细密灯火；下方是水面的模糊倒影；空中浮着青绿光点。",
+    "motion": "雾层极缓慢流动；浮空光点向上漂移；地平线灯火轻微明灭；水面倒影随雾同步晃动。",
+    "lighting": "没有真实布光。光来自图形自发光——地平线的青绿细线、灯火的暖金点、浮空光点的青绿；其余全部是暗部，靠明度分层而不是靠打光。",
+    "texture": "雾是柔边噪声（分形噪声或高斯模糊的椭圆团），山峦是纯色多边形硬边；两者质感对比是这一套的核心。",
+    "use": "东方意绪、禅意、孤独、迷途、启蒙类叙事；也适合当品牌片的底，把主体衬成「雾里唯一的光」。",
+    "migration": "背景分三层画：底噪雾 → 远山 → 近山，靠透明度拉开；地平线与灯火是画面唯一的高频细节，务必程序生成而不是贴图。",
+    "limitations": "雾层太多会糊成灰面；山峦层数少于三层就没有纵深；倒影不做模糊会露馅。",
+    "mix": "与发光线稿角色、灯球点光共享同一套青绿 + 暖金双色；与高饱和霓虹、暖色纸质版面不混。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-ink-mist"  }
+,
+{
+    "id": "vd-style-line-figure",
+    "name": "发光线稿角色",
+    "nameEn": "Glowing Line Figure",
+    "category": "角色线稿",
+    "mechanism": "矢量线稿 + 外发光",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-line-figure.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-line-figure.jpg"
+    ],
+    "visual": "暗底上站着一个白色描边的线稿人物（宽檐帽、长须、宽袍），全部由细线勾成；头后一枚月牙光环，胸口一颗暖白光核，手里一根细杆，杆顶一颗带星芒的金色光球。",
+    "motion": "角色整体轻微摆动，手臂与光杆分别动；光球的光晕缓慢呼吸；浮空光点向上漂。",
+    "lighting": "没有真实布光。光全部来自图形自发光：线稿的白色描边本身带同色外发光，胸口与灯杆顶端是两个过曝光源。",
+    "texture": "纯线条，无填充、无材质、无投影；所有体积感都靠「线在哪、线有多密」表达。",
+    "use": "寓言、东方哲思、IP 吉祥物、人物品牌片；适合需要「人物很轻但很醒目」的叙事。",
+    "migration": "角色只用描边不填充：先画外轮廓，再补衣褶与胡须的内部线，最后统一加同色外发光。",
+    "limitations": "线条太细在手机上会断；描边亮度一高就容易和背景光点混；动作幅度大时线稿会露怯。",
+    "mix": "与墨绿雾原、灯球点光是同一套；与实拍角色、3D 质感角色不混。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-line-figure"  }
 ];
 
 export const motions = [
@@ -512,6 +612,254 @@ export const motions = [
     "refKind": "规格卡",
     "local": false
   }
+,
+{
+    "id": "vd-fx-particle-gather",
+    "name": "粒子汇聚成字",
+    "nameEn": "Particle Gather Into Glyph",
+    "category": "点云文字",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-particle-gather",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "散落的点汇聚成一个字，用一次「聚拢」把抽象概念（天数、次数、积累）变成可读的量。",
+    "description": "点云先随机散布在画面下半，再逐点吸附到目标字形的轮廓上，全部到位后字形带轻微辉光呼吸。",
+    "timing": "散布 0.00–0.45s；吸附 0.45–1.10s；到位后辉光呼吸 1.10s 起循环（周期 2.4s）",
+    "easing": "吸附 easeOut(0.3)，每点带 0–0.35s 随机延迟；呼吸 easeInOut(0.5)",
+    "amplitude": "吸附半径 0→6px；字号 96px；点径 2–3px；辉光强度 1.0→1.25",
+    "spec": [
+        "0.00s 点云随机散布在画面下半，点数 2400",
+        "0.45s 起逐点开始吸附，每点延迟 0–0.35s",
+        "1.10s 全部点到位，字形可读",
+        "1.10s 起辉光按 2.4s 周期在 1.0–1.25 之间呼吸"
+    ],
+    "tags": [
+        "粒子",
+        "汇聚",
+        "文字",
+        "辉光",
+        "数据强调"
+    ],
+    "prompt": "粒子汇聚成字：点云先随机散布在画面下半，0.45 秒起逐点吸附到目标字形轮廓（每点延迟 0–0.35 秒、easeOut 0.3），1.10 秒全部到位后字形带辉光按 2.4 秒周期轻微呼吸；点径 2–3 像素，纯黑底。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const GLYPH_PTS = 2400;\nconst ADHERE = 0.65;\n\n// 用文字轮廓做遮罩，散点落在字形内\nconst mask = makeTextMask(text, size);\nconst pts = scatterInMask(mask, GLYPH_PTS);\n\nexport const ParticleGather = ({ text, size = 96 }) => {\n  const t = frame / fps;\n  return pts.map((p, i) => {\n    const delay = hash01(i) * 0.35;\n    const k = clamp((t - 0.45 - delay) / ADHERE);\n    const e = 1 - Math.pow(1 - k, 3);            // easeOut(0.3)\n    const x = lerp(p.sx, p.tx, e);\n    const y = lerp(p.sy, p.ty, e);\n    const breathe = 1 + 0.25 * (0.5 + 0.5 * Math.sin((t - 1.1) / 2.4 * Math.PI * 2));\n    return <circle cx={x} cy={y} r={1.6} fill='#F6ECC8' opacity={breathe} />;\n  });\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "目标文字轮廓",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 点云随机散布，点数 2400",
+            "0.45s 起逐点吸附，每点延迟 0–0.35s",
+            "1.10s 全部到位，字形可读",
+            "1.10s 起辉光按 2.4s 周期呼吸"
+        ],
+        "prompt": "白色哑光粒子汇聚成字：点云先随机散布在画面下半，0.45 秒起逐点吸附到目标字形轮廓（每点延迟 0–0.35 秒），1.10 秒全部到位后带轻微辉光呼吸；点径 2–3 像素，纯色背景，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-particle-gather_粒子汇聚成字.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
+,
+{
+    "id": "vd-fx-trail-grow",
+    "name": "发光轨迹线生长",
+    "nameEn": "Glowing Trail Growth",
+    "category": "路径动效",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-trail-grow",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "一条发光的线沿路径长出来，把「过程 / 轨迹 / 方向」画成可读的路径，也是全片最容易复用的母题之一。",
+    "description": "贝塞尔路径按长度揭示，两层同路径描边叠出芯线与辉光；线首可选挂一个光球，线尾可选挂站点圆环。",
+    "timing": "起笔 0.20s；生长 1.40s 到 100%；停留后 0.60s 淡出；整体不超过 2.4s",
+    "easing": "生长 easeInOut(0.35)；淡出 easeIn(0.4)",
+    "amplitude": "路径长 1600px；芯线 1px；外描边 6px + 高斯模糊 12px；辉光强度 1.0",
+    "spec": [
+        "0.00s 路径不可见（length=0）",
+        "0.20s 起笔，光球挂在线首",
+        "1.60s 生长到 100%，站点圆环依次点亮",
+        "2.20s 起 0.60s 淡出"
+    ],
+    "tags": [
+        "轨迹",
+        "生长",
+        "贝塞尔",
+        "辉光",
+        "母题"
+    ],
+    "prompt": "发光轨迹线生长：一条青蓝色贝塞尔路径自 0.20 秒起笔、1.40 秒内沿长度生长到 100%（easeInOut 0.35），线首挂一颗光球、线尾的站点圆环依次点亮；两层同路径描边（1px 芯线 + 6px 描边加 12px 高斯模糊）做出芯线与辉光；结束后 0.60 秒淡出。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const TRAIL_LEN = 1600;\nconst GLOW_BLUR = 12;\n\nexport const TrailGrow = ({ path, duration = 1.4, head = true }) => {\n  const t = frame / fps - 0.2;\n  const k = clamp(t / duration);\n  const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;  // easeInOut(0.35)\n  const len = TRAIL_LEN * e;\n  const pt = path.pointAt(len / TRAIL_LEN);\n  return (\n    <g>\n      <path d={path.d} stroke={path.color} strokeWidth={6} opacity={0.55 * (1 - k)}\n            filter={`url(#blur${GLOW_BLUR})`} />\n      <path d={path.d} stroke={path.color} strokeWidth={1} strokeDasharray={len} strokeDashoffset={0} />\n      {head && t >= 0 ? <circle cx={pt.x} cy={pt.y} r={5} fill={path.color} /> : null}\n    </g>\n  );\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "贝塞尔路径",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 路径不可见（length=0）",
+            "0.20s 起笔，光球挂在线首",
+            "1.60s 生长到 100%，站点圆环依次点亮",
+            "2.20s 起 0.60s 淡出"
+        ],
+        "prompt": "白色哑光轨迹线生长：一条路径自 0.20 秒起笔、1.40 秒内沿长度生长到 100%，线首挂一颗圆点、线尾的站点圆环依次点亮；1px 芯线加 6px 柔和描边做出辉光；结束后 0.60 秒淡出；纯色背景，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-trail-grow_发光轨迹线生长.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
+,
+{
+    "id": "vd-fx-chain-link",
+    "name": "锁链链节生长",
+    "nameEn": "Chain Link Growth",
+    "category": "路径动效",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-chain-link",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "一节一节长出来的链子，把「束缚在收紧」演成看得见的动作，而不是一句旁白。",
+    "description": "沿路径等距排布的椭圆链节依次出现并描边生长；链节沿路径轻微起伏，最后几节可以转向主体缠上去。",
+    "timing": "每节出现间隔 0.08s；单节描边生长 0.30s；一条链 12 节约 1.26s；缠身段再加 0.40s 收束",
+    "easing": "单节描边 easeOut(0.4)；收束 easeInOut(0.35)",
+    "amplitude": "链节椭圆 26×13px；间距 52px；描边 3px；路径起伏 ±16px",
+    "spec": [
+        "0.00s 链路径已存在，链节不可见",
+        "0.08s 起每 0.08 秒出现一节，描边 0.30 秒内长成",
+        "约 1.26s 十二节全部到位",
+        "1.66s 起最后几节转向主体并收束，缠在身上"
+    ],
+    "tags": [
+        "锁链",
+        "链节",
+        "路径",
+        "描边生长",
+        "束缚"
+    ],
+    "prompt": "锁链链节生长：一条青蓝色锁链沿路径等距排布，每 0.08 秒出现一节椭圆链节、描边在 0.30 秒内 easeOut 长成（链节 26×13 像素、间距 52 像素），十二节约 1.26 秒全部到位；最后几节转向主体缠上去；纯黑底，带同色辉光。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const LINK_GAP = 0.08;\nconst LINK_DRAW = 0.30;\nconst LINK_RX = 26;\nconst LINK_RY = 13;\n\nexport const ChainLink = ({ path, color = '#35E0F0', count = 12 }) => {\n  const t = frame / fps;\n  return Array.from({ length: count }, (_, i) => {\n    const born = i * LINK_GAP;\n    const k = clamp((t - born) / LINK_DRAW);\n    if (k <= 0) return null;\n    const e = 1 - Math.pow(1 - k, 4);          // easeOut(0.4)\n    const p = path.pointAt(i / (count - 1));\n    const a = p.angle + Math.PI / 2;\n    return (\n      <ellipse cx={p.x} cy={p.y} rx={LINK_RX * e} ry={LINK_RY * e}\n               stroke={color} strokeWidth={3} fill=\"none\"\n               transform={`rotate(${(a * 180) / Math.PI} ${p.x} ${p.y})`} />\n    );\n  });\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "贝塞尔路径",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 链路径已存在，链节不可见",
+            "0.08s 起每 0.08 秒出现一节，描边 0.30 秒内长成",
+            "约 1.26s 十二节全部到位",
+            "1.66s 起最后几节转向主体并收束"
+        ],
+        "prompt": "白色哑光锁链生长：一条链沿路径等距排布，每 0.08 秒出现一节椭圆链节、描边在 0.30 秒内长成（链节 26×13 像素、间距 52 像素），十二节约 1.26 秒全部到位，最后几节转向主体缠上去；纯色背景，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-chain-link_锁链链节生长.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
+,
+{
+    "id": "vd-fx-dissolve-act",
+    "name": "柔边溶解分幕",
+    "nameEn": "Soft Dissolve Act Break",
+    "category": "转场",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-dissolve-act",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "不用硬切也能分幕：两幕同时在场，旧幕淡出、新幕淡入，信息靠字幕与徽章推进而不是靠剪辑。",
+    "description": "两个幕的图层在 1.2 秒里交叉溶解，相机与构图保持不变；段落的区分交给右上角的徽章与字幕。",
+    "timing": "溶解 1.20s；段内其余元素不动；可连做多次",
+    "easing": "交叉溶解用 smoothstep(0.35)，两幕的 alpha 互补",
+    "amplitude": "溶解时长 1.20s；不透明度 1→0 与 0→1；无位移无缩放",
+    "spec": [
+        "0.00s 第一幕 alpha=1，第二幕 alpha=0",
+        "0.60s 两幕 alpha 各 0.5，相机不动",
+        "1.20s 第一幕 alpha=0，第二幕 alpha=1",
+        "全程零位移零缩放，只有不透明度在变"
+    ],
+    "tags": [
+        "溶解",
+        "分幕",
+        "零位移",
+        "字幕推进",
+        "徽章"
+    ],
+    "prompt": "柔边溶解分幕：两幕画面同时在场交叉溶解 1.20 秒（旧幕不透明度 1→0、新幕 0→1，smoothstep 0.35），相机与构图完全不动、无位移无缩放；段落区分交给右上角徽章与字幕。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const DISSOLVE = 1.20;\n\nconst smooth = (k) => k * k * (3 - 2 * k);\n\nexport const DissolveAct = ({ actA, actB, at = 0 }) => {\n  const t = (frame / fps - at) / DISSOLVE;\n  const k = smooth(clamp(t));\n  return (\n    <g>\n      <g opacity={1 - k}>{actA}</g>\n      <g opacity={k}>{actB}</g>\n    </g>\n  );\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "第一幕图层",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 第一幕 alpha=1，第二幕 alpha=0",
+            "0.60s 两幕 alpha 各 0.5，相机不动",
+            "1.20s 第一幕 alpha=0，第二幕 alpha=1",
+            "全程零位移零缩放"
+        ],
+        "prompt": "白色哑光柔边溶解分幕：两幕同时在场交叉溶解 1.20 秒（旧幕不透明度 1→0、新幕 0→1，smoothstep 0.35），相机与构图完全不动、无位移无缩放；纯色背景，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-dissolve-act_柔边溶解分幕.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
 ];
 
 export const lighting = [
@@ -680,5 +1028,101 @@ export const lighting = [
     ],
     "preview": null
   }
+,
+{
+    "id": "vd-light-bloom-pipeline",
+    "name": "暗底辉光管线",
+    "nameEn": "Dark-Back Bloom Pipeline",
+    "category": "光影效果",
+    "direction": "无方向：光源就是画面里的元素本身（点、线、字），不是打上去的光",
+    "hardness": "硬芯 + 柔光晕：元素本体是硬的，晕是外发光自然扩散出来的",
+    "ratio": "芯 : 晕 ≈ 4:1（晕不是独立一层，是 bloom 的溢出）",
+    "colorTemp": "随元素本色：青蓝、品红、橙红、金各随语义走",
+    "palette": [],
+    "effect": "把发光做成一条管线而不是一层：先画硬芯，再叠一层同色加宽描边，最后高斯模糊一次得到外晕。元素颜色一换，整条管线跟着换，所以同一条线稿可以承载完全不同的情绪。",
+    "useCases": [
+        "暗底粒子字",
+        "霓虹描边图形",
+        "轨迹线与光球",
+        "线稿角色"
+    ],
+    "mistakes": [
+        "外发光层数太多会糊成一团白，晕的直径控制在芯的 6–10 倍",
+        "辉光强度跟着底色走：底越亮辉光越难看见",
+        "同一个画面里辉光颜色超过三种就会失去「谁在发光」的指向"
+    ],
+    "prompt": "暗底辉光管线：元素本体是硬芯，先画实心/描边本体，再叠一层同色加宽描边，最后高斯模糊一次得到外晕；芯与晕的亮度比约 4:1；辉光颜色随元素语义走（青蓝 / 品红 / 橙红 / 金）；纯黑底。",
+    "source": "local",
+    "sourceUrl": null,
+    "sourceName": "本地沉淀（自产示意图）",
+    "license": null,
+    "refs": [
+        "光影参考图/光影示意_光影效果_vd-light-bloom-pipeline_暗底辉光管线.png"
+    ],
+    "preview": null  }
+,
+{
+    "id": "vd-light-rim-neon",
+    "name": "霓虹轮廓光",
+    "nameEn": "Neon Rim Light",
+    "category": "光影效果",
+    "direction": "沿图形轮廓：光只出现在描边上，图形内部几乎不亮",
+    "hardness": "柔光：轮廓线本身均匀，外侧一层均匀的辉光衰减",
+    "ratio": "轮廓 : 内部 ≈ 8:1（内部可以是纯黑，靠轮廓把形体「读」出来）",
+    "colorTemp": "青绿 / 品红 / 紫，随语义色变化；同一画面里不超过两种轮廓色",
+    "palette": [],
+    "effect": "形体不靠填充色交代，只靠一圈发亮的轮廓线交代。内部留黑，轮廓外扩一层辉光，于是主体像被通电的线框浮在暗底上——也是「线稿角色」成立的前提。",
+    "useCases": [
+        "线稿角色与吉祥物",
+        "霓虹图形与锁链",
+        "暗底 UI 控件",
+        "半透明叠加元素"
+    ],
+    "mistakes": [
+        "内部一填色就失去「线框」感，轮廓光的价值全在留黑",
+        "描边粗细不统一会看着像描图不像发光",
+        "轮廓色与背景色太近会看不见（青绿配墨绿就出事）"
+    ],
+    "prompt": "霓虹轮廓光：形体只用一圈描边交代，内部保持纯黑，描边外扩一层同色柔和辉光（轮廓与内部的亮度比约 8:1）；描边颜色全画面不超过两种；纯黑底，无投影、无填充色。",
+    "source": "local",
+    "sourceUrl": null,
+    "sourceName": "本地沉淀（自产示意图）",
+    "license": null,
+    "refs": [
+        "光影参考图/光影示意_光影效果_vd-light-rim-neon_霓虹轮廓光.png"
+    ],
+    "preview": null  }
+,
+{
+    "id": "vd-light-lamp-orb",
+    "name": "灯球点光",
+    "nameEn": "Lamp Orb Point Light",
+    "category": "自然光与实用光源",
+    "direction": "灯杆顶端的一点：光源是一个具体可见的实物（灯），不是一个无形的方向",
+    "hardness": "硬光：点光源加多向星芒，边缘清晰；地面上有一小片明确的光斑",
+    "ratio": "光球 : 地面 ≈ 6:1（其余环境几乎全黑，靠这一盏灯撑起画面）",
+    "colorTemp": "暖金 3000K，与底部的青绿冷调形成冷暖对撞",
+    "palette": [],
+    "effect": "把「光源」做成画面里的一个道具：一个人举着一盏灯，光就是他手里那颗球。它同时是光源、是道具、还是象征——三种身份叠在一个图形上，所以观众不需要字幕就懂「他在给别人照路」。",
+    "useCases": [
+        "提灯 / 举火把的人物",
+        "寓言与哲思叙事",
+        "品牌片的光源落款",
+        "暗场唯一的亮源"
+    ],
+    "mistakes": [
+        "星芒射线太长会变成装饰，先定光球直径再定芒长",
+        "光斑要跟着灯杆位置走，固定在画面某处会露馅",
+        "光源只有一个时，地面其余部分必须真的压黑，不能靠整体提亮"
+    ],
+    "prompt": "灯球点光：一颗暖金色光球（3000K）位于灯杆顶端，带 8 方向星芒；光球是画面唯一光源，地面只有一小片对应光斑，其余压到近黑；光球与冷调底色形成冷暖对撞；纯黑背景，无环境光。",
+    "source": "local",
+    "sourceUrl": null,
+    "sourceName": "本地沉淀（自产示意图）",
+    "license": null,
+    "refs": [
+        "光影参考图/光影示意_自然光与实用光源_vd-light-lamp-orb_灯球点光.png"
+    ],
+    "preview": null  }
 ];
 

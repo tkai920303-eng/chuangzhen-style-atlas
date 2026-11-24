@@ -96,7 +96,7 @@ console.log(
 );
 const all = await req('/api/atlas/styles');
 const allJson = JSON.parse(all.body);
-check('风格库全量 558', all.status === 200 && allJson.total === 558, `total=${allJson.total}`);
+check('风格库全量 563', all.status === 200 && allJson.total === 563, `total=${allJson.total}`);
 // 搜索用首条条目的真实名字派生，保证测的是「过滤真的生效」而不是硬编码词
 const firstName = allJson.items?.[0]?.name || '';
 const term = firstName.slice(0, Math.min(4, firstName.length));
