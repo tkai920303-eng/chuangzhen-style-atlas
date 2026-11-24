@@ -27,16 +27,17 @@ data/动效库.json            380 条
 data/光影库.json            138 条
 data/Vibe画法库.json        26 条   知识短片方法条目（六种画法 / 画面语法 / 外观规格 / 分镜表 / 引擎件）
 data/vibe件清单.json        VKit 25 件 + VK 核心 API 21 项（从上游代码实际解析）
-data/配色板.json            915 条参考图的实解码配色（键 = 文件名）
+data/配色板.json            944 条参考图的实解码配色（键 = 文件名）
 data/atlas-image-credits.json  504 张 atlas 主图的逐条授权判读
 data/third-party-exclusion.json  被剔除的第三方素材清单（SHA-256）+ 剔除结果
 assets/风格参考图/           525 张   atlas 主图（54 张版权保留已剔除）+ 本地风格截图 + 24 张画风卡 + 自产参考板
 assets/动效预览图/           436 个   216 条的静态海报帧 + 循环动图 + 2 条工程实拍
-assets/动效参考图/           140 张   本地动效与组件的规格卡
+assets/动效参考图/           140 张   本地动效与组件的规格卡 + 自产规格卡
 assets/光影参考图/           61 张    自产布光示意图
 tools/检索.mjs               离线检索（推荐入口）
 tools/检索Vibe画法.mjs       Vibe 画法库离线检索（两层命中 + --kit 件清单）
 tools/vibe引擎/              上游 MIT 件库源码（vk.js / vk-kit.js）+ 许可 + 说明
+tools/库源/                  条目数据源：本地风格 / 画面设计沉淀 / 光影库条目 / 光影示意图 + 第三方剔除清单
 我的作品/                    （可选）用户自己扫描的作品索引，在 .gitignore 里，不入库
 ```
 
@@ -291,6 +292,6 @@ Windows 上 `PORT=5178 node …` 要写成 `$env:PORT=5178; node …`。
 - **不要**编造条目里没有的参数：条目缺 `ratio` / `colorTemp` 时，用 `prompt` 原文，不要自己填数
 - **不要**把规格卡当渲染预览描述给用户——它是规格，不是画面
 - **不要**删掉 motion-prompt 元素代码的首行授权注释
-- **不要**把 `imageRedistributable: false` 的主图再分发（这 38 张已从本仓库剔除）
+- **不要**把 `imageRedistributable: false` 的主图再分发（这 54 张已从本仓库剔除）
 - **不要**把用户自己的作品索引（`我的作品/`）提交进仓库——它是个人内容，`npm run verify` 会拦
 - 条目文本、参考图、作者信息都**保持原样**引用；改写版要另行标注，不要混进原文
