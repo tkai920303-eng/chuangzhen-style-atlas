@@ -239,6 +239,86 @@ export const styles = [
     "limitations": "线条太细在手机上会断；描边亮度一高就容易和背景光点混；动作幅度大时线稿会露怯。",
     "mix": "与墨绿雾原、灯球点光是同一套；与实拍角色、3D 质感角色不混。",
     "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-line-figure"  }
+,
+{
+    "id": "vd-style-woodblock-print",
+    "name": "木刻版画套色",
+    "nameEn": "Woodblock Print Color Separation",
+    "category": "版画套色",
+    "mechanism": "有限套色 + 硬边色块",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-woodblock-print.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-woodblock-print.jpg"
+    ],
+    "visual": "像一块被印出来的木刻版画：画面由有限套色（白 + 群青系 4 阶 + 青绿 2 阶 + 柠檬黄 + 橙 3 阶 + 朱红 2 阶 + 草绿 3 阶 + 棕 2 阶 + 米白）拼成，色块之间是硬边、没有中间过渡；所有形体（房檐、灯笼、旗、披风）都被简化成几条轮廓色块；纸面保留颗粒与轻微套印错位。",
+    "motion": "画面本身不动，动的是色块的更替：印刷机每落一次版就换一组色块（uBlocks 控制每个色块的印刷量），最后盖上一枚朱红印章收尾。",
+    "lighting": "没有真实布光。光感来自套色本身的明度关系：受光面用亮黄/米白，背光面用群青与棕，明暗交界永远是硬边而不是渐变。",
+    "texture": "纸纹颗粒 + 色块边缘的轻微套印错位与毛边；无渐变、无高光、无软阴影。",
+    "use": "讲市集、旅行、节庆这类「热闹的日常」；也适合把 3D 渲染统一压成版画质感；品牌片片尾落款。",
+    "migration": "先定一套 18 色的套色表（每色有明确用途：群青系走暗部、柠檬黄走光部、朱红只做点缀），再把所有材质映射到表内；色块之间允许硬边，但同一形体内部用同色阶的明暗两档。",
+    "limitations": "套色数一多就失去版画味，控制在 8–18 色之间；渐变、高光、软阴影都会破坏质感，必须一并压掉。",
+    "mix": "与纸纹底、印章落款共享同一套语言；与霓虹辉虹、写实材质、渐变 UI 不混。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-woodblock-print"  }
+,
+{
+    "id": "vd-style-gouache-dawn",
+    "name": "水粉夜景云海",
+    "nameEn": "Gouache Night Cloud Sea",
+    "category": "手绘水粉",
+    "mechanism": "颜料笔触 + 分层大气",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-gouache-dawn.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-gouache-dawn.jpg"
+    ],
+    "visual": "赛璐璐手绘背景：近黑蓝紫的夜空向地平线渐变成粉霞与乳白，翻涌的云海由无数团块堆叠成有体积的层；中景一座石头图书馆塔（铜绿穹顶、缠着常春藤与松树）立在崖上，前景是几丛被风压弯的芒草。整体像吉卜力的黎明远景。",
+    "motion": "云海与芒草极缓慢地起伏，镜头几乎不动；变化集中在天光（夜蓝 → 粉 → 白）随时间推移。",
+    "lighting": "典型赛璐璐背光：主体被背后的亮天空勾出一圈亮边，正面几乎全黑；天光是唯一光源，色温从地平线的暖粉过渡到高空的冷蓝。",
+    "texture": "颜料笔触（可见的刷痕与颜料边缘）、纸面颗粒、轻微的套色晕开；云有团块状的手绘结构而不是体积渲染的均匀噪声。",
+    "use": "黎明/黄昏的大远景、孤独的旅人、宏大但安静的开场；也给「用代码画手绘背景」提供可复制的路径。",
+    "migration": "背景分层做（天光 / 远云 / 中景山体 / 前景草），每层单独一块画布再合成；主体用纯黑剪影 + 背光勾边，不要给正面任何细节。",
+    "limitations": "云团的手绘结构很难程序生成——要么写专门的笔刷函数，要么接受噪声云；近景草木的笔触最费工。",
+    "mix": "与深空星尘、纸本分层共享同一套低饱和冷调；与暖色木刻、霓虹高饱和不混。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-gouache-dawn"  }
+,
+{
+    "id": "vd-style-box-anatomy",
+    "name": "盒模型解剖色块",
+    "nameEn": "Box Model Anatomy Blocks",
+    "category": "技术图解",
+    "mechanism": "四色层框 + 标签",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-box-anatomy.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-box-anatomy.jpg"
+    ],
+    "visual": "把 CSS 的盒模型画成四个叠在一起的圆角框：margin（橙）、border（黄）、padding（绿）、content（蓝），每个框上直接印着自己的名字，框体在三维里互相穿插、带柔和落影；页面底色是极浅的灰绿。",
+    "motion": "框体沿各自的轴缓慢错位与旋转，像一本被拆开的说明书；标签始终贴在框的左上角。",
+    "lighting": "没有真实布光。体积感来自三档明度（框面本色 + 顶部高光带 + 柔和落影），落影一律偏冷。",
+    "texture": "纯色圆角矩形 + 1px 描边，无材质无噪点；字是深墨色无衬线。",
+    "use": "讲结构、讲层级、讲「这个东西是怎么搭的」；技术讲解、产品文档、网站自己的「解剖」章节。",
+    "migration": "四种语义色固定绑定四层（橙=外扩、黄=描边、绿=内衬、蓝=内容），全站复用；标签用小号字直接印在框上，不要做引线。",
+    "limitations": "四层叠在一起时最内层容易被挡住；标签压在框上会牺牲可读性，字号不能太小。",
+    "mix": "与极简白底、纸纹底共享同一套克制配色；与暗场霓虹、木刻套色不混。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-box-anatomy"  }
+,
+{
+    "id": "vd-style-boring-editor",
+    "name": "编辑器拟真界面",
+    "nameEn": "Editor-Spoof Interface",
+    "category": "极简版式",
+    "mechanism": "设计工具拟真",
+    "paletteFrom": "风格图鉴_画面设计沉淀_vd-style-boring-editor.jpg",
+    "refs": [
+        "风格图鉴_画面设计沉淀_vd-style-boring-editor.jpg"
+    ],
+    "visual": "极简白底的一页演示：左上一个大标题、右侧一张折线图、页脚一条粗蓝条与页码；某一页的标题上会套着一个蓝色的选中框（八个圆形控制柄），像正在设计软件里被选中——故意「无聊」到像工作稿。",
+    "motion": "条目逐条淡入（stagger），标题的选中框与控制柄在切换时出现又消失；图表是真实图表库画的。",
+    "lighting": "纯平面 UI，无光影；层次只靠字号、字重与留白。",
+    "texture": "无纹理：纯白底 + 深灰字 + 一条品牌蓝。",
+    "use": "技术演讲、内部评审、反 AI 炫技的「朴素」表达；也适合作为「演示工具」的视觉基调。",
+    "migration": "只留三档层级（标题/正文/注释）+ 一条强调色；把编辑器选中框当成一种「反高潮」的装饰，比加特效更有效。",
+    "limitations": "没有图表与图形能力，纯文字页面容易显空；需要接一个真实图表库才有说服力。",
+    "mix": "与盒模型解剖、纸本分层共享同一套极简语言；与手绘水粉、霓虹动效不混。",
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-style-boring-editor"  }
 ];
 
 export const motions = [
@@ -860,6 +940,257 @@ export const motions = [
     "preview": null,
     "refKind": "规格卡",
     "local": false  }
+,
+{
+    "id": "vd-fx-score-driven",
+    "name": "乐谱驱动画面",
+    "nameEn": "Score-Driven Picture",
+    "category": "音画同步",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-score-driven",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "一份音符列表同时喂给合成器和画面：声音不是配乐、画面不是动画，而是同一份数据的两种呈现。",
+    "description": "每个乐器对应一件画面元素：古筝音高＝纸灯笼的明暗与高度，长笛旋律＝杯口蒸汽带的起伏与宽度，音符＝柠檬的每一次接触，鼓＝地砖的下沉，铃＝水面涟漪，垫底和弦＝热气球 burner 的喷火。",
+    "timing": "100 BPM / 34 小节；一个音＝一个画面事件；每小节 8 盏纸灯笼（一音一盏）；长笛句长＝蒸汽带的长度",
+    "easing": "画面事件用音符的包络驱动（起音快、衰减慢）；灯笼的亮灭用音量而非线性插值",
+    "amplitude": "灯笼亮度 0.3→1.0；蒸汽带高度 0→18px、宽度随呼吸；柠檬下落 1.0s/次；水面涟漪半径 0→140px",
+    "spec": [
+        "0.00s 乐谱开始，纸灯笼按音高依次点亮（每小节 8 盏）",
+        "长笛进句时，杯口蒸汽带随旋律起伏——高度是音高，宽度是气息",
+        "马林巴段落（12–17 小节）：一颗柠檬自由落体，撞到器皿就是谱上的一个音",
+        "鼓点落在铺路石与摄影师的手上；铃声落在水面涟漪与星星上",
+        "每次切镜都落在和弦上；镜头结束时乐句收束"
+    ],
+    "tags": [
+        "乐谱驱动",
+        "音画同步",
+        "一数一图",
+        "合成器",
+        "事件映射"
+    ],
+    "prompt": "乐谱驱动画面：一份音符列表同时驱动合成器与画面；古筝音高对应纸灯笼的明暗与高度（每小节八盏，一音一盏），长笛旋律对应杯口蒸汽带的起伏（高度是音高、宽度是气息），马林巴段落让柠檬自由落体且每次撞到器皿就是谱上的一个音，鼓点落在铺路石上，铃声落在水面涟漪上；画面事件用音符包络驱动，起音快、衰减慢。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const BPM = 100;\nconst SPB = 60 / BPM;              // 每拍秒数\n\n// 乐谱是唯一事实来源：画面元素都向它查询\nconst score = [\n  { t: 0, dur: 0.5, inst: 'koto', pitch: 62 },\n  { t: 0.5, dur: 0.5, inst: 'koto', pitch: 65 },\n  // ... 共 34 小节\n];\n\nexport const ScoreDriven = () => {\n  const now = clock.getTime();\n  const notes = score.filter((n) => now >= n.t && now < n.t + n.dur);\n  return notes.map((n, i) => {\n    switch (n.inst) {\n      case 'koto': {              // 纸灯笼：音高定高度，音量定亮度\n        const env = envelope(now - n.t, n.dur);\n        return <Lantern key={i} y={lanternRow(n.pitch)} glow={env} />;\n      }\n      case 'flute': {             // 蒸汽带：高度是音高，宽度是气息\n        const env = envelope(now - n.t, n.dur);\n        return <SteamRibbon key={i} height={n.pitch - 55} width={4 + env * 6} />;\n      }\n      case 'marimba':             // 柠檬：每次接触器皿就是一个音\n        return <Lemon key={i} falling={now - n.t} />;\n      default:\n        return null;\n    }\n  });\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "发光灯笼",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 乐谱开始，纸灯笼按音高依次点亮（每小节八盏）",
+            "长笛进句时，杯口蒸汽带随旋律起伏",
+            "马林巴段落：柠檬自由落体，每次撞到器皿就是一个音",
+            "鼓点落在铺路石上；铃声落在水面涟漪上"
+        ],
+        "prompt": "白色哑光乐谱驱动画面：一份音符列表同时驱动画面；古筝音高对应纸灯笼的明暗与高度（每小节八盏，一音一盏），长笛旋律对应杯口蒸汽带的起伏（高度是音高、宽度是气息），马林巴段落让柠檬自由落体且每次撞到器皿就是谱上的一个音，鼓点落在铺路石上，铃声落在水面涟漪上；纯色背景，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-score-driven_乐谱驱动画面.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
+,
+{
+    "id": "vd-fx-paper-break-open",
+    "name": "纸面破开进三维",
+    "nameEn": "Paper Break-Open",
+    "category": "转场",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-paper-break-open",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "用一次「平面印刷品裂开」把观众从纸上带进三维世界——比任何转场都更有实感，因为破的是一张真实的纸。",
+    "description": "开场是一张平铺的木刻版画纸，四个节拍每落一次版就多印一色；第 4.8 秒太阳亮起；随后纸面沿着折痕破开，碎片向两侧卷起，露出背后的三维市场。",
+    "timing": "木刻落版 4 拍（每拍 0.5s）→ 太阳点亮 4.8s → 纸面破裂 5.2–7.0s → 三维世界进入 7.0s",
+    "easing": "落版用硬切（每拍一次）；太阳点亮 0.6s easeOut；破裂用刚体模拟，无缓动",
+    "amplitude": "四色版位（uBlocks 0→1 逐个）；破裂碎片 24–40 片，初速 1.5–4m/s",
+    "spec": [
+        "0.00s 纸面全白，只剩木刻轮廓",
+        "0.5/1.0/1.5/2.0s 每拍落一版版（蓝、红、黄绿），四版齐",
+        "4.80s 太阳点亮，画面第一次出现暖光",
+        "5.20s 纸面沿折痕裂开，碎片向两侧卷起",
+        "7.00s 碎片落尽，三维市场完全进入"
+    ],
+    "tags": [
+        "转场",
+        "落版",
+        "破裂",
+        "纸片",
+        "平面进三维"
+    ],
+    "prompt": "纸面破开进三维转场：开场是一张平铺的木刻版画纸，四个节拍每 0.5 秒落一版版（蓝、红、黄绿依次叠印），第 4.8 秒太阳点亮并第一次出现暖光，第 5.2 秒纸面沿折痕裂开、24 到 40 片碎片以 1.5 到 4 米每秒向两侧卷起，第 7 秒碎片落尽、露出背后的三维市场。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const PLATES = ['blue', 'red', 'yellowGreen'];   // 每拍落一版\nconst SUN_AT = 4.8;\nconst BREAK_AT = 5.2;\n\nexport const PaperBreakOpen = ({ video }) => {\n  const t = clock.getTime();\n  const plates = PLATES.map((k, i) =>\n    t >= i * 0.5 ? { plate: k, amount: 1 } : null\n  ).filter(Boolean);\n  const sun = t >= SUN_AT ? clamp((t - SUN_AT) / 0.6) : 0;      // 太阳 0.6s easeOut\n  const broken = t >= BREAK_AT;\n  return (\n    <group>\n      {broken ? <PaperShards seed={7} /> : <PaperSheet plates={plates} />}\n      <Sun amount={sun} />\n    </group>\n  );\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "平面纸面",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 纸面全白，只剩木刻轮廓",
+            "0.5/1.0/1.5/2.0s 每拍落一版版",
+            "4.80s 太阳点亮",
+            "5.20s 纸面沿折痕裂开，碎片向两侧卷起",
+            "7.00s 碎片落尽，三维世界完全进入"
+        ],
+        "prompt": "白色哑光纸面破开进三维转场：开场是一张平铺的纸，四个节拍每 0.5 秒落一版版，第 4.8 秒一盏灯点亮，第 5.2 秒纸面沿折痕裂开、碎片向两侧卷起，第 7 秒碎片落尽、露出背后的场景；纯色背景，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-paper-break-open_纸面破开进三维.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
+,
+{
+    "id": "vd-fx-brush-selfdraw",
+    "name": "笔触自绘",
+    "nameEn": "Self-Drawing Brush Stroke",
+    "category": "书写动效",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-brush-selfdraw",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "让笔画自己长出来：不是把一段动画贴上去，而是让一条真实绘制的笔触按长度逐步显形。",
+    "description": "笔刷在加速光栅（numba）里逐笔画出，带鬃毛分叉与压力变化；标题字与印章用同一套笔刷逻辑自绘，落笔时能看到笔锋起收。",
+    "timing": "单笔 0.6–1.2s（按笔画长度）；字与印 1.4s；笔画之间错开 0.15s",
+    "easing": "按弧长均匀揭示（不是时间均匀），所以转弯处笔画会显得慢——这是手写的节奏",
+    "amplitude": "线宽随压力 1–6px；笔锋分叉 3–7 根；墨色 #1B2430，边缘轻微洇开",
+    "spec": [
+        "0.00s 笔尖落在起笔点，纸面空白",
+        "0.10–1.20s 笔画沿弧长逐段长出，带鬃毛分叉",
+        "1.20s 收笔，末端带一个墨点",
+        "1.40s 起落印章，朱红半透明"
+    ],
+    "tags": [
+        "笔触",
+        "自绘",
+        "鬃毛",
+        "墨线",
+        "书写"
+    ],
+    "prompt": "笔触自绘：一条带鬃毛分叉的手写笔画按弧长均匀长出（0.10 到 1.20 秒），线宽随压力在 1 到 6 像素之间变化，笔尖起收自然、末端留一个墨点；随后用同一套笔刷落下一枚朱红半透明印章；纸面为暖白底，无投影。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const BRUSH_SPLITS = 5;          // 鬃毛分叉数\n\n// 按弧长揭示：转弯处自然变慢，像手写\nexport const SelfDraw = ({ stroke, duration = 1.2, ink = '#1B2430' }) => {\n  const t = clock.getTime() / duration;\n  const len = stroke.length * Math.min(1, t);\n  const hairs = Array.from({ length: BRUSH_SPLITS }, (_, h) =>\n    stroke.sample(h / BRUSH_SPLITS, len)\n  );\n  const w = 1 + 5 * pressure(stroke, len);          // 压力决定线宽\n  return (\n    <g stroke={ink} fill=\"none\" strokeLinecap=\"round\">\n      {hairs.map((h, i) => (\n        <path key={i} d={h.d} strokeWidth={w * (1 - i * 0.12)} />\n      ))}\n    </g>\n  );\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "手写笔画",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 笔尖落在起笔点，纸面空白",
+            "0.10–1.20s 笔画沿弧长逐段长出，带鬃毛分叉",
+            "1.20s 收笔，末端带一个墨点",
+            "1.40s 起落印章"
+        ],
+        "prompt": "白色哑光笔触自绘：一条带鬃毛分叉的手写笔画按弧长均匀长出（0.10 到 1.20 秒），线宽随压力在 1 到 6 像素之间变化，笔尖起收自然、末端留一个墨点；随后落下一枚半透明印章；暖白纸底，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-brush-selfdraw_笔触自绘.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
+,
+{
+    "id": "vd-fx-font-stretch",
+    "name": "可变字宽拉伸",
+    "nameEn": "Variable Font Width Stretch",
+    "category": "排版动效",
+    "pack": "local",
+    "packName": "本地沉淀",
+    "source": "local",
+    "sourceUrl": null,
+    "sourcePath": "04_工具\\库源\\画面设计沉淀.mjs#vd-fx-font-stretch",
+    "sourceDir": null,
+    "license": null,
+    "status": "自产沉淀，已出规格与白模版",
+    "meaning": "用可变字体的字宽轴做「呼吸」与「强调」，比缩放更干净：字形不变形，只是变胖变瘦。",
+    "description": "标题逐行把 font-variation-settings 的 wdth 从 50% 推到 150%，用 clip-path 遮罩逐字显现；滚动时同一手法用来做段落展开。",
+    "timing": "单行 0.7s；多行错开 0.08s；滚动触发的段落展开 0.6s",
+    "easing": "easeOut(0.35)；wdh 与 opacity 同步，遮罩在最后 0.15s 收齐",
+    "amplitude": "wdth 50%↔150%（100 个字重宽度单位）；位移 0；缩放 1.0",
+    "spec": [
+        "0.00s 标题行 wdth=50%，被 clip-path 遮住看不见",
+        "0.20s 起 wdth 推到 150%，同时 clip-path 从左向右展开",
+        "0.70s 该行到位，下一行以 0.08s 错开跟上",
+        "滚动进入视口时，同一手法用来展开折叠段落（grid-template-rows: 0fr → 1fr）"
+    ],
+    "tags": [
+        "可变字体",
+        "字宽",
+        "遮罩",
+        "逐字显现",
+        "滚动动画"
+    ],
+    "prompt": "可变字宽拉伸：标题逐行把可变字体的 wdth 从 50% 推到 150%，同时用 clip-path 遮罩从左向右展开（单行 0.70 秒、easeOut 0.35、多行错开 0.08 秒）；字形不变形只是变胖变瘦；滚动进入视口时用同一手法展开折叠段落。",
+    "code": {
+        "firstLine": "// 授权：MIT（自产代码，随包分发）",
+        "body": "const WDTH = { from: 50, to: 150 };\nconst EASE = (k) => 1 - Math.pow(1 - k, 3);   // easeOut(0.35)\n\nexport const FontStretch = ({ lines, delay = 0.08 }) => {\n  const t = frame / fps;\n  return lines.map((text, i) => {\n    const local = clamp((t - i * delay) / 0.7);\n    const e = EASE(local);\n    const wdth = WDTH.from + (WDTH.to - WDTH.from) * e;\n    return (\n      <span key={i}\n            style={{\n              fontVariationSettings: `\"wdth\" ${wdth}, \"wght\" 800`,\n              clipPath: `inset(0 ${100 - e * 100}% 0 0)`,\n              display: 'inline-block',\n            }}>\n        {text}\n      </span>\n    );\n  });\n};"
+    },
+    "whitened": {
+        "label": "白模版",
+        "rules": "保留时序、缓动与幅度；材质改为中性灰白哑光；颜色、背景、阴影与文字全部替换为槽位。",
+        "slots": [
+            "标题文字",
+            "哑光无反射",
+            "{颜色}",
+            "纯色背景",
+            "极轻柔影",
+            "占位文字"
+        ],
+        "spec": [
+            "0.00s 标题行 wdth=50%，被遮罩挡住",
+            "0.20s 起 wdth 推到 150%，遮罩同时展开",
+            "0.70s 该行到位，下一行以 0.08s 错开跟上",
+            "滚动进入视口时同一手法展开折叠段落"
+        ],
+        "prompt": "白色哑光可变字宽拉伸：标题逐行把可变字体的 wdth 从 50% 推到 150%，同时用遮罩从左向右展开（单行 0.70 秒、easeOut 0.35、多行错开 0.08 秒）；字形不变形只是变胖变瘦；纯色背景，无投影。"
+    },
+    "refs": [
+        "动效参考图/动效规格卡_vd-fx-font-stretch_可变字宽拉伸.png"
+    ],
+    "preview": null,
+    "refKind": "规格卡",
+    "local": false  }
 ];
 
 export const lighting = [
@@ -1122,6 +1453,99 @@ export const lighting = [
     "license": null,
     "refs": [
         "光影参考图/光影示意_自然光与实用光源_vd-light-lamp-orb_灯球点光.png"
+    ],
+    "preview": null  }
+,
+{
+    "id": "vd-light-lantern-field",
+    "name": "灯笼光场",
+    "nameEn": "Lantern Light Field",
+    "category": "自然光与实用光源",
+    "direction": "多点实用光源：几百盏纸灯笼与天灯各自是一个光源，没有主光",
+    "hardness": "软光：纸罩把点光源摊开，边缘不锐；远处的灯笼靠自发光而不是照明",
+    "ratio": "亮处（灯本身） : 街面 ≈ 30:1，街面靠大量灯叠加才勉强抬起来",
+    "colorTemp": "灯罩内 2200–2600K 暖橙；天灯更冷（因为隔着雾与纸）",
+    "palette": [],
+    "effect": "夜里一条街被几百盏灯照亮：不是一盏主光打亮全场，而是每个光源各自照一小圈，圈与圈之间留黑，靠数量把整体亮度顶上去。天空因此可以整片压黑，只留灯的形状与暖色。",
+    "useCases": [
+        "夜市 / 祭典 / 灯会",
+        "结尾的万家灯火",
+        "任何需要「人多、热闹」的夜景"
+    ],
+    "mistakes": [
+        "光源数量一多性能先崩——先用发光贴图假装照明，只给近处几盏真光源",
+        "所有灯用同一种亮度会像贴图，亮度要按到光源的距离分层",
+        "街面没有环境反弹会显得贴地，补一层很弱的暖色环境光"
+    ],
+    "prompt": "灯笼光场：夜里一条街被几百盏纸灯笼与天灯照亮，每个灯是一个独立的暖橙实用光源（2200 到 2600K），各自照亮一小圈地面，圈与圈之间留黑；靠光源数量而非主光把整体亮度顶上去，天空整片压黑；地面有很弱的暖色环境反弹。",
+    "source": "local",
+    "sourceUrl": null,
+    "sourceName": "本地沉淀（自产示意图）",
+    "license": null,
+    "refs": [
+        "光影参考图/光影示意_自然光与实用光源_vd-light-lantern-field_灯笼光场.png"
+    ],
+    "preview": null  }
+,
+{
+    "id": "vd-light-sun-shaft",
+    "name": "后期体积光束",
+    "nameEn": "Post-Processed Sun Shaft",
+    "category": "光影效果",
+    "direction": "沿光源方向：从画面高处的光源斜切下来，方向感靠光束的平行条纹给出",
+    "hardness": "软光：光束边缘被噪声打散，没有清晰的边界线",
+    "ratio": "光束 : 环境 ≈ 4:1（靠后期叠加，不是真实散射）",
+    "colorTemp": "跟随场景主光（这里取 3200–4200K 的暖白）",
+    "palette": [],
+    "effect": "体积光做成后期的一层：先从深度缓冲里取到遮挡关系，再沿光源方向做一次带噪声的射线积分，最后与原图叠加。好处是零几何成本，且强度可以单独调；代价是它不参与阴影计算。",
+    "useCases": [
+        "晨光穿过窗棂",
+        "树冠缝隙的光柱",
+        "灯笼与烛火周围的光雾"
+    ],
+    "mistakes": [
+        "不做深度缓冲就会穿墙——光束必须被前景遮挡裁断",
+        "光束不能太干净，要有随时间流动的噪声，否则像一张静态贴图",
+        "与 bloom 同时开容易糊成一团白，先定好谁占主导"
+    ],
+    "prompt": "后期体积光束：从深度缓冲取遮挡关系，沿光源方向做带噪声的射线积分得到光柱，叠加在画面上（强度约为环境的四倍，暖白 3200 到 4200K）；光柱边缘被噪声打散没有硬边，随时间缓慢流动；前景必须能遮挡光柱。",
+    "source": "local",
+    "sourceUrl": null,
+    "sourceName": "本地沉淀（自产示意图）",
+    "license": null,
+    "refs": [
+        "光影参考图/光影示意_光影效果_vd-light-sun-shaft_后期体积光束.png"
+    ],
+    "preview": null  }
+,
+{
+    "id": "vd-light-dawn-gradation",
+    "name": "黎明色温渐变",
+    "nameEn": "Dawn Color-Temperature Gradation",
+    "category": "人物光位",
+    "direction": "全画面渐变光：光源在画面外的地平线，方向由色带位置暗示而非由投影给出",
+    "hardness": "无光源实体，是天光本身；地平线附近最亮，向上迅速转冷",
+    "ratio": "地平线 : 高空 ≈ 8:1（这是明度比，不是照度比）",
+    "colorTemp": "地平线 2000–2500K（粉霞）→ 中空 4500K → 高空 9000K（深蓝紫）",
+    "palette": [],
+    "effect": "黎明的光不来自一个点，而来自一条带：天光沿垂直方向做色温渐变，暖粉只贴在地平线一线，往上经乳白迅速转成冷蓝紫。主体在这个光里几乎全黑，只被亮天空勾出一圈边——赛璐璐夜景最省力也最像画的一条光。",
+    "useCases": [
+        "黎明/黄昏的开场大远景",
+        "剪影人物",
+        "梦境与回忆段"
+    ],
+    "mistakes": [
+        "渐变带太宽会失去日出的方向感，暖色只留地平线上下各一成",
+        "主体正面给任何细节就破功——必须纯剪影加背光边",
+        "忘了保留高空的冷色，夜空会变成发灰的暖调"
+    ],
+    "prompt": "黎明色温渐变：一条竖直的色温带从地平线的暖粉（2000 到 2500K）经乳白（4500K）向上迅速过渡到深蓝紫（9000K）；地平线最亮、向上明度比约八比一；主体是纯黑剪影，只被亮天空勾出一圈边；地平线以下压到近黑。",
+    "source": "local",
+    "sourceUrl": null,
+    "sourceName": "本地沉淀（自产示意图）",
+    "license": null,
+    "refs": [
+        "光影参考图/光影示意_人物光位_vd-light-dawn-gradation_黎明色温渐变.png"
     ],
     "preview": null  }
 ];

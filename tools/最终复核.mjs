@@ -17,9 +17,9 @@ const check = (label, cond, extra = '') => {
 console.log('=== 1. 产出文件 ===');
 console.log(`  布局：${P.layout}（根目录 ${P.root}）`);
 const files = [
-  ['风格库.json', 563],
-  ['动效库.json', 380],
-  ['光影库.json', 138],
+  ['风格库.json', 567],
+  ['动效库.json', 384],
+  ['光影库.json', 141],
 ];
 const docs = {};
 for (const [rel, expect] of files) {
@@ -82,12 +82,12 @@ for (const f of allImgs) {
 console.log('  图片分布:', JSON.stringify(dirs));
 check('图片库文件总数 > 1000', allImgs.length > 1000, `${allImgs.length} 个`);
 // 风格参考图：本地 574 张（含 6 张《画面设计沉淀》自产图）；公开包在导出阶段自动剔除「版权保留」主图，故按署名表实算期望值
-let expectStyleImgs = 579;
+let expectStyleImgs = 583;
 let strippedMain = 0;
 try {
   const cr = JSON.parse(fs.readFileSync(path.join(P.data, 'atlas-image-credits.json'), 'utf8').replace(/^\uFEFF/, ''));
   strippedMain = (cr.images || []).filter((c) => c.redistributable === false && c.includedInPackage === false).length;
-  if (strippedMain) expectStyleImgs = 579 - strippedMain;
+  if (strippedMain) expectStyleImgs = 583 - strippedMain;
 } catch {}
 check(
   `风格参考图 ${expectStyleImgs} 个${strippedMain ? `（已剔除 ${strippedMain} 张版权保留主图）` : ''}`,
@@ -95,8 +95,8 @@ check(
   `${dirs['风格参考图']}`
 );
 check('动效预览图 436 个（216 条 × 海报+动图，再加工程实拍 2 条）', dirs['动效预览图'] === 436, `${dirs['动效预览图']}`);
-check('动效参考图 140 个', dirs['动效参考图'] === 140, `${dirs['动效参考图']}`);
-check('光影参考图 61 个', dirs['光影参考图'] === 61, `${dirs['光影参考图']}`);
+check('动效参考图 144 个', dirs['动效参考图'] === 144, `${dirs['动效参考图']}`);
+check('光影参考图 64 个', dirs['光影参考图'] === 64, `${dirs['光影参考图']}`);
 let palCount = 0;
 try {
   const PAL = JSON.parse(fs.readFileSync(P.palette, 'utf8'));
@@ -114,13 +114,13 @@ const hasImg = (x) => (x.refs || []).length > 0 || x.refsStripped === true;
 const strippedCount = (arr) => arr.filter((x) => x.refsStripped === true).length;
 const sStrip = strippedCount(S);
 check(
-  '风格库 563 条全部有图（版权保留条目除外）',
+  '风格库 567 条全部有图（版权保留条目除外）',
   S.every(hasImg),
   sStrip ? `${S.length - sStrip} 条有图 + ${sStrip} 条版权保留已剔除` : `${S.length} 条`
 );
-check('动效库 380 条全部有图', M.every((x) => (x.refs || []).length > 0));
+check('动效库 384 条全部有图', M.every((x) => (x.refs || []).length > 0));
 check(
-  '光影库 138 条全部有图（版权保留条目除外）',
+  '光影库 141 条全部有图（版权保留条目除外）',
   L.every(hasImg),
   (() => {
     const n = strippedCount(L);
